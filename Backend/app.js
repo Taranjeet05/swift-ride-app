@@ -31,6 +31,6 @@ app.get("/", (req, res) => {
   res.send("Hello From Express!, we are in the Backend Home Page⚒️");
 });
 
-app.use("/api/v1", userRoutes); //request will be: http://localhost:3000/api/v1/register
+app.use("/user", userRoutes); //request will be: /user/register
 
 export default app;
