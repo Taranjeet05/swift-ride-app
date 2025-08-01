@@ -8,6 +8,7 @@ const app = express();
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
+import cookieParser from "cookie-parser";
 
 import connectToDb from "./db/db.js";
 import userRoutes from "./routes/user.route.js";
@@ -26,6 +27,8 @@ app.use(cors());
 app.use(helmet());
 // use Morgan for request logging
 app.use(morgan("dev")); // 'dev' format for logging HTTP requests
+// use  cookie-parser middleware to handle incoming cookies
+app.use(cookieParser());
 
 app.get("/", (req, res) => {
   res.send("Hello From Express!, we are in the Backend Home Page⚒️");
