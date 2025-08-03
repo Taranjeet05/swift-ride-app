@@ -1,4 +1,5 @@
 import userModel from "../models/user.model.js";
+import blacklistTokenModel from "../models/blacklistToken.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
@@ -20,8 +21,16 @@ const authUser = async (req, res, next) => {
 
     if (authHeader && !authHeader.startsWith("Bearer ")) {
       return res
-        .status(400)
+        .status(401)
         .json({ message: "Malformed Authorization header" });
+    }
+
+    const isBlacklisted = await blacklistTokenModel.findOne({ token: token });
+
+    if (isBlacklisted) {
+      return res.status(401).json({
+        message: "Unauthorized",
+      });
     }
 
     // verify the token
