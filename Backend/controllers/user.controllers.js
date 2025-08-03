@@ -1,6 +1,7 @@
 import userModel from "../models/user.model.js";
 import createUser from "../services/user.services.js";
 import { validationResult } from "express-validator";
+import blacklistTokenModel from "../models/blacklistToken.model.js";
 
 const registerUser = async (req, res, next) => {
   try {
@@ -126,8 +127,34 @@ const getUserProfile = async (req, res, next) => {
   }
 };
 
+const logoutUser = async (req, res, next) => {
+  try {
+    const authHeader = req.headers.authorization;
+    const token =
+      req.cookies.token ||
+      (authHeader &&
+        authHeader.startsWith("Bearer ") &&
+        authHeader.split(" ")[1]);
+
+    // Clear the Cookie
+    res.clearCookie("token");
+    if (token) {
+      await blacklistTokenModel.create({ token });
+    }
+
+    res.status(200).json({ message: "Logged Out" });
+  } catch (error) {
+    console.log("Error while Logout User", error.message);
+    res.status(500).json({
+      message: "Internal server error",
+      error: error.message || "An unexpected error occurred",
+    });
+  }
+};
+
 export default {
   registerUser,
   loginUser,
   getUserProfile,
+  logoutUser,
 };
