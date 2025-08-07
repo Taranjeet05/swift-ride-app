@@ -12,6 +12,7 @@ import cookieParser from "cookie-parser";
 
 import connectToDb from "./db/db.js";
 import userRoutes from "./routes/user.route.js";
+import captainRoutes from "./routes/captain.route.js";
 
 // connect to MongoDb
 connectToDb();
@@ -35,5 +36,6 @@ app.get("/", (req, res) => {
 });
 
 app.use("/user", userRoutes); //request will be: /user/register
+app.use("/captain", captainRoutes);
 
 export default app;
