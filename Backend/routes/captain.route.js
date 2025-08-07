@@ -22,9 +22,13 @@ router.post(
       .isLength({ min: 3 })
       .withMessage("Plate must be at least 3 characters long."),
     body("vehicle.capacity")
+      .notEmpty()
+      .withMessage("Capacity is required")
       .isInt({ min: 1 })
       .withMessage("Capacity must be at least 1"),
-    body("capacity.vehicleType")
+    body("vehicle.vehicleType")
+      .notEmpty()
+      .withMessage("Vehicle Type is required")
       .isIn(["car", "motorcycle"])
       .withMessage("Invalid Vehicle Type"),
   ],
