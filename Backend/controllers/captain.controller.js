@@ -78,4 +78,53 @@ const registerCaptain = async (req, res, next) => {
   }
 };
 
-export default { registerCaptain };
+const loginCaptain = async (req, res, next) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        errors: errors.array(),
+      });
+    }
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({
+        message: "Email and password are required",
+      });
+    }
+    const captain = await captainModel.findOne({ email }).select("+password");
+    if (!captain) {
+      return res.status(401).json({
+        message: "Invalid email or password",
+      });
+    }
+    const isPasswordMatch = await captain.comparePassword(password);
+    if (!isPasswordMatch) {
+      return res.status(401).json({
+        message: "Invalid email or password",
+      });
+    }
+    const captainObj = captain.toObject();
+    delete captainObj.password; // remove password from captain object
+    delete captainObj.__v; // remove the version key from the captain object
+    delete captainObj.socketId; // remove socketId from the captain object
+    captainObj._id = captainObj._id.toString(); // convert _id to string
+    // generate auth token
+    const token = captain.generateAuthToken();
+    res.cookie("token", token);
+
+    res.status(200).json({
+      message: "Captain logged in successfully",
+      token,
+      captain: captainObj,
+    });
+  } catch (error) {
+    console.log("An error while logging in captain", error.message),
+      res.status(500).json({
+        message: "An error occurred while logging in captain",
+        error: error.message || "An unexpected Error occurred",
+      });
+  }
+};
+
+export default { registerCaptain, loginCaptain };
