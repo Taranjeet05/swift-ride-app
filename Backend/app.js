@@ -35,7 +35,7 @@ app.get("/", (req, res) => {
   res.send("Hello From Express!, we are in the Backend Home Page⚒️");
 });
 
-app.use("/user", userRoutes); //request will be: /user/register
-app.use("/captain", captainRoutes);
+app.use("/users", userRoutes); //request will be: /user/register
+app.use("/captains", captainRoutes);
 
 export default app;
