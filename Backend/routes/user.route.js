@@ -2,8 +2,7 @@ import express from "express";
 const router = express.Router();
 import { body } from "express-validator";
 import userController from "../controllers/user.controller.js";
-import authMiddleware from "../middlewares/auth.middleware.js";
-
+import { authUser } from "../middlewares/auth.middleware.js";
 const { registerUser, loginUser, getUserProfile, logoutUser } = userController;
 
 router.post(
@@ -31,8 +30,8 @@ router.post(
   loginUser
 );
 
-router.get("/profile", authMiddleware, getUserProfile);
+router.get("/profile", authUser, getUserProfile);
 
-router.get("/logout", authMiddleware, logoutUser);
+router.get("/logout", authUser, logoutUser);
 
 export default router;
