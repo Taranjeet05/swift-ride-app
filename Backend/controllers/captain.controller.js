@@ -1,6 +1,7 @@
 import captainModel from "../models/captain.model.js";
 import { validationResult } from "express-validator";
 import createCaptain from "../services/captain.service.js";
+import blacklistTokenModel from "../models/blacklistToken.model.js";
 
 const registerCaptain = async (req, res, next) => {
   try {
@@ -127,4 +128,45 @@ const loginCaptain = async (req, res, next) => {
   }
 };
 
-export default { registerCaptain, loginCaptain };
+const getCaptainProfile = async (req, res, next) => {
+  try {
+    res.status(200).json(req.captain);
+  } catch (error) {
+    console.log("Error while fetching Captain profile", error.message);
+    res.status(500).json({
+      message: "Internal server error",
+      error: error.message || "An unexpected error occurred",
+    });
+  }
+};
+
+const logoutCaptain = async (req, res, next) => {
+  try {
+    const authHeader = req.headers.authorization;
+    const token =
+      req.cookies.token ||
+      (authHeader &&
+        authHeader.startsWith("Bearer ") &&
+        authHeader.split(" ")[1]);
+
+    // clear the cookie
+    res.clearCookie("token");
+    if (token) {
+      await blacklistTokenModel.create({ token });
+    }
+    res.status(200).json({ message: "Logout successful" });
+  } catch (error) {
+    console.log("Error while logout Captain", error.message);
+    res.status(500).json({
+      message: "Internal server error",
+      error: error.message || "An unexpected error occurred",
+    });
+  }
+};
+
+export default {
+  registerCaptain,
+  loginCaptain,
+  getCaptainProfile,
+  logoutCaptain,
+};
