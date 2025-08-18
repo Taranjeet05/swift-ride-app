@@ -68,7 +68,7 @@ const UserLogin = () => {
           to="/captain-login"
           className="bg-[#10b461] flex justify-center items-center text-white font-semibold mb-5 rounded px-4 py-2 w-full text-lg  placeholder:text-base"
         >
-          Create Account
+          Sign in as Captain
         </Link>
       </div>
     </div>
