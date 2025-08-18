@@ -20,7 +20,7 @@ const UserLogin = () => {
   return (
     <div className="p-7 flex flex-col justify-between h-screen">
       <div>
-        <img src="/images/uber.webp" alt="uber-logo" className="w-16 mb-10" />
+        <img src="/images/uber.svg" alt="uber-logo" className="w-16 mb-10" />
 
         <form action="" onSubmit={(e) => submitHandler(e)}>
           <h3 className="text-lg font-medium mb-2">What's your Email</h3>
