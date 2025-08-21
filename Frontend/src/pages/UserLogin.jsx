@@ -1,20 +1,34 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { loginUser } from "../api/userApi";
+import { useUserStore } from "../Store/useUserStore";
 
 const UserLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userData, setUserData] = useState({});
+
+  const navigate = useNavigate();
+
+  const setUser = useUserStore((state) => state.setUser);
+
+  const { mutate, isPending, isError, error } = useMutation({
+    mutationFn: loginUser,
+    onSuccess: (data) => {
+      setUser(data.user);
+      localStorage.setItem("token", data.token);
+      navigate("/home");
+      setEmail("");
+      setPassword("");
+    },
+  });
 
   const submitHandler = (e) => {
     e.preventDefault();
-    setUserData({
+    mutate({
       email,
       password,
     });
-    console.log(userData);
-    setEmail("");
-    setPassword("");
   };
 
   return (
@@ -48,9 +62,17 @@ const UserLogin = () => {
             placeholder="password"
             className="bg-[#eeeeee] mb-7 rounded px-4 py-2 border w-full text-lg  placeholder:text-base"
           />
-          <button className="bg-[#111] text-white font-semibold mb-3 rounded px-4 py-2 w-full text-lg  placeholder:text-base">
-            Login
+          <button
+            disabled={isPending}
+            className="bg-[#111] text-white font-semibold mb-3 rounded px-4 py-2 w-full text-lg  placeholder:text-base"
+          >
+            {isPending ? "Logging in..." : "Login"}
           </button>
+          {isError && (
+            <p className="text-red-500 text-sm my-2 text-center hover:underline cursor-no-drop">
+              {error?.response?.data?.message || "Something went wrong"}
+            </p>
+          )}
           <p className="text-center">
             New here ?
             <Link
