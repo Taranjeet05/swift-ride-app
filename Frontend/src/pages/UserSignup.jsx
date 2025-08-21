@@ -1,17 +1,31 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { signupUser } from "../api/userApi";
+import { useUserStore } from "../Store/useUserStore";
 
 const UserSignup = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userData, setUserData] = useState({});
 
-  const submitHandler = (e) => {
+  const navigate = useNavigate();
+  const setUser = useUserStore((state) => state.setUser);
+
+  const { mutate, isPending, isError, error } = useMutation({
+    mutationFn: signupUser,
+    onSuccess: (data) => {
+      setUser(data.user);
+      localStorage.setItem("token", data.token);
+      navigate("/home");
+    },
+  });
+
+  const submitHandler = async (e) => {
     e.preventDefault();
 
-    setUserData({
+    mutate({
       fullName: {
         firstName,
         lastName,
@@ -19,7 +33,6 @@ const UserSignup = () => {
       email,
       password,
     });
-    console.log(userData);
 
     setFirstName("");
     setLastName("");
@@ -93,10 +106,18 @@ const UserSignup = () => {
               placeholder="password"
             />
 
-            <button className="bg-[#111] text-white font-semibold mb-3 rounded-lg px-4 py-2 w-full text-lg placeholder:text-base">
-              Create account
+            <button
+              disabled={isPending}
+              className="bg-[#111] text-white font-semibold mb-3 rounded-lg px-4 py-2 w-full text-lg placeholder:text-base"
+            >
+              {isPending ? "Creating Account..." : "Create Account"}
             </button>
           </form>
+          {isError && (
+            <p className="text-red-500 text-sm my-2 text-center hover:underline cursor-no-drop">
+              {error?.response?.data?.message || "Something went wrong"}{" "}
+            </p>
+          )}
           <p className="text-center">
             Already have a account?{" "}
             <Link to="/login" className="text-blue-600">
