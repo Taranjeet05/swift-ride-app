@@ -5,7 +5,23 @@ export const signupUser = async (newUser) => {
     const { data } = await API.post("/users/register", newUser);
     return data;
   } catch (error) {
-    console.error("Error signing up user:", error.message);
+    console.error(
+      "Error signing up user:",
+      error?.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
+export const loginUser = async (user) => {
+  try {
+    const { data } = await API.post("/users/login", user);
+    return data;
+  } catch (error) {
+    console.log(
+      "Error logging in User:",
+      error.response?.data || error.message
+    );
     throw error;
   }
 };
