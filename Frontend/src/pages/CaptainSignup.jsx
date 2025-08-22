@@ -23,7 +23,7 @@ const CaptainSignup = () => {
     onSuccess: (data) => {
       setCaptain(data.captain);
       localStorage.setItem("token", data.token);
-      navigate("/home");
+      navigate("/captain-home");
       setEmail("");
       setFirstName("");
       setLastName("");
