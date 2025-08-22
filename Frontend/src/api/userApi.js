@@ -25,3 +25,20 @@ export const loginUser = async (user) => {
     throw error;
   }
 };
+
+export const logoutUser = async (token) => {
+  try {
+    const { data } = await API.get("/users/logout", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return data;
+  } catch (error) {
+    console.log(
+      "Error logging out User:",
+      error?.response?.data || error.message
+    );
+    throw error;
+  }
+};
