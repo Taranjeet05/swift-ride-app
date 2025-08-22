@@ -3,10 +3,12 @@ import { useMutation } from "@tanstack/react-query";
 import { logoutCaptain } from "../api/captainApi";
 import { useNavigate } from "react-router-dom";
 import { useCaptainStore } from "../Store/useCaptainStore";
+import { useQueryClient } from "@tanstack/react-query";
 
 const CaptainLogout = () => {
   const navigate = useNavigate();
   const clearCaptain = useCaptainStore((state) => state.clearCaptain);
+  const queryClient = useQueryClient();
 
   const { mutate: logoutMutate, isLoading } = useMutation({
     mutationFn: logoutCaptain,
@@ -15,6 +17,8 @@ const CaptainLogout = () => {
       // clear local state and storage on successful logout
       clearCaptain();
       localStorage.removeItem("token");
+      // clear query cache
+      queryClient.clear();
       // redirect to login page
       navigate("/captain-login");
     },
@@ -24,6 +28,8 @@ const CaptainLogout = () => {
       // fallback : clear everything anyway
       clearCaptain();
       localStorage.removeItem("token");
+      // clear query cache
+      queryClient.clear();
       // redirect to login page
       navigate("/captain-login");
     },
