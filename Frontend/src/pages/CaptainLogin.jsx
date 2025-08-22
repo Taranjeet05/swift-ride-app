@@ -1,20 +1,33 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { loginCaptain } from "../api/captainApi";
+import { useCaptainStore } from "../Store/useCaptainStore";
+import { useNavigate } from "react-router-dom";
 
 const CaptainLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [captainData, setCaptainData] = useState({});
+
+  const navigate = useNavigate();
+  const setCaptain = useCaptainStore((state) => state.setCaptain);
+  const { mutate, isPending, isError, error } = useMutation({
+    mutationFn: loginCaptain,
+    onSuccess: (data) => {
+      setCaptain(data.captain);
+      localStorage.setItem("token", data.token);
+      navigate("/home");
+      setEmail("");
+      setPassword("");
+    },
+  });
 
   const submitHandler = (e) => {
     e.preventDefault();
-    setCaptainData({
+    mutate({
       email,
       password,
     });
-    console.log(captainData);
-    setEmail("");
-    setPassword("");
   };
 
   return (
@@ -52,9 +65,17 @@ const CaptainLogin = () => {
             placeholder="password"
             className="bg-[#eeeeee] mb-7 rounded px-4 py-2 border w-full text-lg  placeholder:text-base"
           />
-          <button className="bg-[#111] text-white font-semibold mb-3 rounded px-4 py-2 w-full text-lg  placeholder:text-base">
-            Login
+          <button
+            disabled={isPending}
+            className="bg-[#111] text-white font-semibold mb-3 rounded px-4 py-2 w-full text-lg  placeholder:text-base"
+          >
+            {isPending ? "Logging in..." : "Login"}
           </button>
+          {isError && (
+            <p className="text-red-500 text-sm my-2 text-center hover:underline cursor-no-drop">
+              {error?.response?.data?.message || "Something went wrong"}
+            </p>
+          )}
           <p className="text-center">
             join a fleet ?
             <Link
