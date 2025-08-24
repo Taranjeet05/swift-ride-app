@@ -131,7 +131,7 @@ const Home = () => {
       {/* vehicle panel for vehicle selection */}
       <div
         ref={vehiclePanelRef}
-        className="fixed w-full z-10 bottom-0 px-3 py-10 bg-white translate-y-full pt-14"
+        className="fixed w-full z-10 bottom-0 px-3 py-10 bg-white translate-y-full pt-12"
       >
         <VehiclePanel setConfirmRidePanel={setConfirmRidePanel} setVehiclePanelOpen={setVehiclePanelOpen} />
       </div>
@@ -139,7 +139,7 @@ const Home = () => {
       {/* *** */}
       <div
         ref={confirmRidePanelRef}
-        className="fixed w-full z-10 bottom-0 px-3 py-10 bg-white translate-y-full pt-14"
+        className="fixed w-full z-10 bottom-0 px-3 py-6 bg-white translate-y-full pt-12"
       >
         <ConfirmRide />
       </div>
