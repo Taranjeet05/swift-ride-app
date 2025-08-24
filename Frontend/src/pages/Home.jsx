@@ -4,6 +4,8 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import "remixicon/fonts/remixicon.css";
 import LocationSearchPanel from "../components/LocationSearchPanel";
+import VehiclePanel from "../components/VehiclePanel";
+import ConfirmRide from "../components/ConfirmRide";
 
 // Register the ReactPlugin once
 gsap.registerPlugin(useGSAP);
@@ -12,8 +14,13 @@ const Home = () => {
   const [pickUp, setPickUp] = useState("");
   const [destination, setDestination] = useState("");
   const [panelOpen, setPanelOpen] = useState(false);
+  const [vehiclePanelOpen, setVehiclePanelOpen] = useState(false);
+  const [confirmRidePanel, setConfirmRidePanel] = useState(false);
+
   const panelRef = useRef(null);
   const panelCloseRef = useRef(null);
+  const vehiclePanelRef = useRef(null);
+  const confirmRidePanelRef = useRef(null);
 
   const handlePanelOpen = () => {
     setPanelOpen(true);
@@ -37,8 +44,25 @@ const Home = () => {
     }
   }, [panelOpen]);
 
+  useGSAP(() => {
+    if (vehiclePanelOpen) {
+      gsap.to(vehiclePanelRef.current, { transform: "translateY(0%)" });
+    } else {
+      gsap.to(vehiclePanelRef.current, { translateY: "100%" });
+    }
+  }, [vehiclePanelOpen]);
+
+  useGSAP(() => {
+    if (confirmRidePanel) {
+      gsap.to(confirmRidePanelRef.current, { transform: "translateY(0%)" });
+    } else {
+      gsap.to(confirmRidePanelRef.current, { translateY: "100%" });
+    }
+  }, [confirmRidePanel]);
+
   return (
     <div className="h-screen relative">
+      {/*//*in this DIV: We have the uber logo */}
       <div>
         <img
           src="images/uber.svg"
@@ -48,7 +72,7 @@ const Home = () => {
       </div>
 
       {/* *** */}
-
+      {/* //*in this DIV: we have the map image for temporary use until api integration */}
       <div className="h-screen w-screen">
         {/* uber map image for temporary use until api integration */}
         <img
@@ -59,7 +83,7 @@ const Home = () => {
       </div>
 
       {/* **** */}
-
+      {/* //*in this DIV: we have the form for pick-up and destination input */}
       <div className="h-screen flex flex-col justify-end absolute w-full top-0 ">
         {/* div to handle form for pick-up and destination input */}
         <div className="h-[30%] p-6 bg-white relative">
@@ -93,10 +117,32 @@ const Home = () => {
         </div>
         {/* div to handle suggestion for pre destination */}
         <div ref={panelRef} className="bg-white h-0 overflow-hidden">
-          <LocationSearchPanel />
+          <LocationSearchPanel
+            vehiclePanelOpen={vehiclePanelOpen}
+            setVehiclePanelOpen={setVehiclePanelOpen}
+            panelOpen={panelOpen}
+            setPanelOpen={setPanelOpen}
+          />
         </div>
       </div>
+
       {/* *** */}
+      {/* //*in this DIV: we have the vehicle panel for vehicle selection */}
+      {/* vehicle panel for vehicle selection */}
+      <div
+        ref={vehiclePanelRef}
+        className="fixed w-full z-10 bottom-0 px-3 py-10 bg-white translate-y-full pt-14"
+      >
+        <VehiclePanel setConfirmRidePanel={setConfirmRidePanel} setVehiclePanelOpen={setVehiclePanelOpen} />
+      </div>
+
+      {/* *** */}
+      <div
+        ref={confirmRidePanelRef}
+        className="fixed w-full z-10 bottom-0 px-3 py-10 bg-white translate-y-full pt-14"
+      >
+        <ConfirmRide />
+      </div>
     </div>
   );
 };
