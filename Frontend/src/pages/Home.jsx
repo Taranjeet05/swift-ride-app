@@ -133,7 +133,10 @@ const Home = () => {
         ref={vehiclePanelRef}
         className="fixed w-full z-10 bottom-0 px-3 py-10 bg-white translate-y-full pt-12"
       >
-        <VehiclePanel setConfirmRidePanel={setConfirmRidePanel} setVehiclePanelOpen={setVehiclePanelOpen} />
+        <VehiclePanel
+          setConfirmRidePanel={setConfirmRidePanel}
+          setVehiclePanelOpen={setVehiclePanelOpen}
+        />
       </div>
 
       {/* *** */}
@@ -141,7 +144,10 @@ const Home = () => {
         ref={confirmRidePanelRef}
         className="fixed w-full z-10 bottom-0 px-3 py-6 bg-white translate-y-full pt-12"
       >
-        <ConfirmRide />
+        <ConfirmRide
+          confirmRidePanel={confirmRidePanel}
+          setConfirmRidePanel={setConfirmRidePanel}
+        />
       </div>
     </div>
   );
