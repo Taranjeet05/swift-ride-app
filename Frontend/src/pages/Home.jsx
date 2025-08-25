@@ -6,6 +6,7 @@ import "remixicon/fonts/remixicon.css";
 import LocationSearchPanel from "../components/LocationSearchPanel";
 import VehiclePanel from "../components/VehiclePanel";
 import ConfirmRide from "../components/ConfirmRide";
+import LookingForDriver from "../components/LookingForDriver";
 
 // Register the ReactPlugin once
 gsap.registerPlugin(useGSAP);
@@ -16,11 +17,13 @@ const Home = () => {
   const [panelOpen, setPanelOpen] = useState(false);
   const [vehiclePanelOpen, setVehiclePanelOpen] = useState(false);
   const [confirmRidePanel, setConfirmRidePanel] = useState(false);
+  const [vehicleFound, setVehicleFound] = useState(false);
 
   const panelRef = useRef(null);
   const panelCloseRef = useRef(null);
   const vehiclePanelRef = useRef(null);
   const confirmRidePanelRef = useRef(null);
+  const vehicleFoundRef = useRef(null);
 
   const handlePanelOpen = () => {
     setPanelOpen(true);
@@ -33,7 +36,8 @@ const Home = () => {
     setDestination("");
     setPanelOpen(false);
   };
-
+// GSAP Animations
+// Animation for panel open/close based on panelOpen state
   useGSAP(() => {
     if (panelOpen) {
       gsap.to(panelRef.current, { height: "70%", padding: "24" });
@@ -43,7 +47,7 @@ const Home = () => {
       gsap.to(panelCloseRef.current, { opacity: 0 });
     }
   }, [panelOpen]);
-
+// Animation for vehicle panel based on vehiclePanelOpen state
   useGSAP(() => {
     if (vehiclePanelOpen) {
       gsap.to(vehiclePanelRef.current, { transform: "translateY(0%)" });
@@ -51,7 +55,7 @@ const Home = () => {
       gsap.to(vehiclePanelRef.current, { translateY: "100%" });
     }
   }, [vehiclePanelOpen]);
-
+// Animation for confirm ride panel based on confirmRidePanel state
   useGSAP(() => {
     if (confirmRidePanel) {
       gsap.to(confirmRidePanelRef.current, { transform: "translateY(0%)" });
@@ -59,6 +63,14 @@ const Home = () => {
       gsap.to(confirmRidePanelRef.current, { translateY: "100%" });
     }
   }, [confirmRidePanel]);
+
+  useGSAP(() => {
+    if (vehicleFound) {
+      gsap.to(vehicleFoundRef.current, { transform: "translateY(0%)" });
+    } else {
+      gsap.to(vehicleFoundRef.current, { translateY: "100%" });
+    }
+  }, [vehicleFound]);
 
   return (
     <div className="h-screen relative">
@@ -140,6 +152,8 @@ const Home = () => {
       </div>
 
       {/* *** */}
+      {/* //*in this DIV: we have the confirm ride panel for confirming ride */}
+      {/* confirm ride panel for confirming ride */}
       <div
         ref={confirmRidePanelRef}
         className="fixed w-full z-10 bottom-0 px-3 py-6 bg-white translate-y-full pt-12"
@@ -147,7 +161,16 @@ const Home = () => {
         <ConfirmRide
           confirmRidePanel={confirmRidePanel}
           setConfirmRidePanel={setConfirmRidePanel}
+          setVehicleFound={setVehicleFound}
         />
+      </div>
+
+      {/* *** */}
+      <div
+        ref={vehicleFoundRef}
+        className="fixed w-full z-10 bottom-0 px-3 py-6 bg-white translate-y-full pt-12"
+      >
+        <LookingForDriver />
       </div>
     </div>
   );
