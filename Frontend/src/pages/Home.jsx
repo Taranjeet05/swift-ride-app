@@ -7,6 +7,7 @@ import LocationSearchPanel from "../components/LocationSearchPanel";
 import VehiclePanel from "../components/VehiclePanel";
 import ConfirmRide from "../components/ConfirmRide";
 import LookingForDriver from "../components/LookingForDriver";
+import WaitingForDriver from "../components/WaitingForDriver";
 
 // Register the ReactPlugin once
 gsap.registerPlugin(useGSAP);
@@ -18,12 +19,14 @@ const Home = () => {
   const [vehiclePanelOpen, setVehiclePanelOpen] = useState(false);
   const [confirmRidePanel, setConfirmRidePanel] = useState(false);
   const [vehicleFound, setVehicleFound] = useState(false);
+  const [waitingForDriver, setWaitingForDriver] = useState(false);
 
   const panelRef = useRef(null);
   const panelCloseRef = useRef(null);
   const vehiclePanelRef = useRef(null);
   const confirmRidePanelRef = useRef(null);
   const vehicleFoundRef = useRef(null);
+  const WaitingForDriverRef = useRef(null);
 
   const handlePanelOpen = () => {
     setPanelOpen(true);
@@ -36,8 +39,8 @@ const Home = () => {
     setDestination("");
     setPanelOpen(false);
   };
-// GSAP Animations
-// Animation for panel open/close based on panelOpen state
+  // GSAP Animations
+  // Animation for panel open/close based on panelOpen state
   useGSAP(() => {
     if (panelOpen) {
       gsap.to(panelRef.current, { height: "70%", padding: "24" });
@@ -47,7 +50,7 @@ const Home = () => {
       gsap.to(panelCloseRef.current, { opacity: 0 });
     }
   }, [panelOpen]);
-// Animation for vehicle panel based on vehiclePanelOpen state
+  // Animation for vehicle panel based on vehiclePanelOpen state
   useGSAP(() => {
     if (vehiclePanelOpen) {
       gsap.to(vehiclePanelRef.current, { transform: "translateY(0%)" });
@@ -55,7 +58,7 @@ const Home = () => {
       gsap.to(vehiclePanelRef.current, { translateY: "100%" });
     }
   }, [vehiclePanelOpen]);
-// Animation for confirm ride panel based on confirmRidePanel state
+  // Animation for confirm ride panel based on confirmRidePanel state
   useGSAP(() => {
     if (confirmRidePanel) {
       gsap.to(confirmRidePanelRef.current, { transform: "translateY(0%)" });
@@ -66,11 +69,31 @@ const Home = () => {
 
   useGSAP(() => {
     if (vehicleFound) {
-      gsap.to(vehicleFoundRef.current, { transform: "translateY(0%)" });
+      gsap.to(vehicleFoundRef.current, { y: "0%" });
+
+      const timer = setTimeout(() => {
+        gsap.to(vehicleFoundRef.current, {
+          y: "100%",
+          onComplete: () => {
+            setVehicleFound(false);
+            setWaitingForDriver(true);
+          },
+        });
+      }, 3000);
+
+      return () => clearTimeout(timer);
     } else {
       gsap.to(vehicleFoundRef.current, { translateY: "100%" });
     }
   }, [vehicleFound]);
+
+  useGSAP(() => {
+    if (waitingForDriver) {
+      gsap.to(WaitingForDriverRef.current, { transform: "translateY(0%)" });
+    } else {
+      gsap.to(WaitingForDriverRef.current, { translateY: "100%" });
+    }
+  }, [waitingForDriver]);
 
   return (
     <div className="h-screen relative">
@@ -170,7 +193,18 @@ const Home = () => {
         ref={vehicleFoundRef}
         className="fixed w-full z-10 bottom-0 px-3 py-6 bg-white translate-y-full pt-12"
       >
-        <LookingForDriver />
+        <LookingForDriver setVehicleFound={setVehicleFound} />
+      </div>
+
+      {/* *** */}
+      <div
+        ref={WaitingForDriverRef}
+        className="fixed w-full z-10 bottom-0 px-3 py-6 bg-white translate-y-full  pt-12"
+      >
+        <WaitingForDriver
+          waitingForDriver={waitingForDriver}
+          setWaitingForDriver={setWaitingForDriver}
+        />
       </div>
     </div>
   );
