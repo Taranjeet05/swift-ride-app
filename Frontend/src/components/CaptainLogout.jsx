@@ -46,12 +46,18 @@ const CaptainLogout = () => {
     logoutMutate(token);
   };
 
-  return (
-    <div>
-      <button disabled={isLoading} onClick={handleLogOut}>
-        {isLoading ? "Logging out..." : "Logout Captain"}
-      </button>
-    </div>
+return (
+    <button
+      onClick={handleLogOut}
+      disabled={isLoading}
+      className="h-10 w-10 bg-white flex items-center justify-center rounded-full shadow hover:bg-gray-100 transition"
+    >
+      {isLoading ? (
+        <i className="ri-loader-4-line animate-spin text-lg text-gray-700"></i>
+      ) : (
+        <i className="ri-logout-box-line text-lg font-medium"></i>
+      )}
+    </button>
   );
 };
 
