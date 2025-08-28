@@ -1,19 +1,26 @@
 import React from "react";
 
-const RidePopUp = (props) => {
+const ConfirmRidePopUp = (props) => {
   return (
     <div>
       <h5
         onClick={() => {
-          props.setRidePopUpPanel(false);
+          props.setConfirmRidePopUpPanel(false);
         }}
         className="p-1 text-center absolute top-0 w-[93%] cursor-pointer"
       >
         <i className="ri-arrow-down-wide-line text-3xl text-gray-200 cursor-pointer"></i>
       </h5>
-      <h3 className="text-2xl font-semibold mb-6">New Ride Available!</h3>
+      <h3 className="text-2xl font-semibold mb-5 flex items-center">
+        Confirm this ride to Start
+        <span className="mx-2 flex space-x-1">
+          <span className="animate-bounce">.</span>
+          <span className="animate-bounce [animation-delay:0.7s]">.</span>
+          <span className="animate-bounce [animation-delay:0.9s]">.</span>
+        </span>
+      </h3>
 
-      <div className="flex items-center justify-between p-3 bg-gradient-to-r from-slate-900 via-rose-700 to-amber-500 rounded-lg">
+      <div className="flex items-center justify-between mt-10 p-3 bg-gradient-to-r from-slate-900 via-rose-700 to-amber-500 rounded-lg">
         <div className="flex items-center justify-start gap-4">
           <img
             className="h-20 w-16 rounded-full object-cover"
@@ -31,7 +38,7 @@ const RidePopUp = (props) => {
         </div>
       </div>
 
-      <div className="flex flex-col items-center justify-between gap-2">
+      <div className="flex flex-col items-center justify-between gap-2 mt-5">
         <div className="w-full bg-[#eee] flex flex-col items-start justify-center gap-5 px-4 py-4 rounded-lg mb-5 mt-5">
           <div className="flex items-center gap-5 ">
             <i className="text-lg ri-map-pin-2-fill"></i>
@@ -62,23 +69,17 @@ const RidePopUp = (props) => {
           </div>
         </div>
 
-        <div className="w-full flex items-center justify-evenly gap-4">
+        <div className="w-full flex items-center justify-evenly gap-4 mt-5">
           <button
             onClick={() => {
-              props.setRidePopUpPanel(false);
+              props.setConfirmRidePopUpPanel(false);
             }}
-            className="flex-1 bg-gray-300 hover:bg-gray-400 transition cursor-pointer text-gray-700 font-semibold p-2 rounded-lg mt-1"
+            className="flex-1 bg-red-600 hover:bg-red-700 transition cursor-pointer text-white font-semibold p-2 rounded-lg mt-1"
           >
-            Ignore Ride
+            Cancel
           </button>
-          <button
-            onClick={() => {
-              props.setRidePopUpPanel(false);
-              props.setConfirmRidePopUpPanel(true);
-            }}
-            className="flex-1 bg-green-600 hover:bg-green-700 transition cursor-pointer text-white font-semibold p-2 rounded-lg mt-1"
-          >
-            Accept Ride
+          <button className="flex-1 bg-green-600 hover:bg-green-700 transition cursor-pointer text-white font-semibold p-2 rounded-lg mt-1">
+            Confirm
           </button>
         </div>
       </div>
@@ -86,4 +87,4 @@ const RidePopUp = (props) => {
   );
 };
 
-export default RidePopUp;
+export default ConfirmRidePopUp;
