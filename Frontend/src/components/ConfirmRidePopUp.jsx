@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const ConfirmRidePopUp = (props) => {
   return (
@@ -78,9 +79,12 @@ const ConfirmRidePopUp = (props) => {
           >
             Cancel
           </button>
-          <button className="flex-1 bg-green-600 hover:bg-green-700 transition cursor-pointer text-white font-semibold p-2 rounded-lg mt-1">
+          <Link
+            to="/captain-riding"
+            className="flex-1 flex justify-center items-center bg-green-600 hover:bg-green-700 transition cursor-pointer text-white font-semibold p-2 rounded-lg mt-1"
+          >
             Confirm
-          </button>
+          </Link>
         </div>
       </div>
     </div>
