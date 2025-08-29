@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const ConfirmRidePopUp = (props) => {
   const navigate = useNavigate();
+
+  const [otp, setOtp] = useState("");
 
   const handleConfirm = (e) => {
     e.preventDefault();
@@ -95,6 +97,8 @@ const ConfirmRidePopUp = (props) => {
             placeholder="Enter OTP"
             className="font-mono border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm"
             required
+            value={otp}
+            onChange={(e) => setOtp(e.target.value)}
           />
           <div className="flex w-full gap-4 mt-4">
             {/* Cancel button */}
