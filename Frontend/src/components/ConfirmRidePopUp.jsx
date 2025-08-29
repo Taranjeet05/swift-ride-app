@@ -1,7 +1,15 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const ConfirmRidePopUp = (props) => {
+  const navigate = useNavigate();
+
+  const handleConfirm = (e) => {
+    e.preventDefault();
+
+    navigate("/captain-riding");
+  };
+
   return (
     <div>
       <h5
@@ -70,22 +78,44 @@ const ConfirmRidePopUp = (props) => {
           </div>
         </div>
 
-        <div className="w-full flex items-center justify-evenly gap-4 mt-5">
-          <button
-            onClick={() => {
-              props.setConfirmRidePopUpPanel(false);
-            }}
-            className="flex-1 bg-red-600 hover:bg-red-700 transition cursor-pointer text-white font-semibold p-2 rounded-lg mt-1"
-          >
-            Cancel
-          </button>
-          <Link
-            to="/captain-riding"
-            className="flex-1 flex justify-center items-center bg-green-600 hover:bg-green-700 transition cursor-pointer text-white font-semibold p-2 rounded-lg mt-1"
-          >
-            Confirm
-          </Link>
-        </div>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            // here you can handle confirmation logic
+            console.log("Ride Confirmed!");
+          }}
+          className="w-full flex flex-col items-center justify-evenly gap-4 mt-2"
+        >
+          {/* Input field for confirmation (optional, like entering OTP or code) */}
+          <input
+            type="text"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            maxLength={4}
+            placeholder="Enter OTP"
+            className="font-mono border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm"
+            required
+          />
+          <div className="flex w-full gap-4 mt-4">
+            {/* Cancel button */}
+            <button
+              type="button"
+              onClick={() => props.setConfirmRidePopUpPanel(false)}
+              className="flex-1 bg-red-600 hover:bg-red-700 transition cursor-pointer text-white font-semibold p-2 rounded-lg mt-1"
+            >
+              Cancel
+            </button>
+
+            {/* Confirm button (submit form) */}
+            <button
+              onClick={handleConfirm}
+              type="submit"
+              className="flex-1 flex justify-center items-center bg-green-600 hover:bg-green-700 transition cursor-pointer text-white font-semibold p-2 rounded-lg mt-1"
+            >
+              Confirm
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
