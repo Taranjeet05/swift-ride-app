@@ -13,6 +13,7 @@ import cookieParser from "cookie-parser";
 import connectToDb from "./db/db.js";
 import userRoutes from "./routes/user.route.js";
 import captainRoutes from "./routes/captain.route.js";
+import mapRoutes from "./routes/map.route.js";
 
 // connect to MongoDb
 connectToDb();
@@ -37,5 +38,6 @@ app.get("/", (req, res) => {
 
 app.use("/users", userRoutes); //request will be: /user/register
 app.use("/captains", captainRoutes);
+app.use("/map", mapRoutes);
 
 export default app;
