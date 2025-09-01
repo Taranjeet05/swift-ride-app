@@ -5,7 +5,11 @@ import { query } from "express-validator";
 
 const router = express.Router();
 
-const { getCoordinates, getDistanceTimeController } = mapController;
+const {
+  getCoordinates,
+  getDistanceTimeController,
+  getAutoCompleteSuggestions,
+} = mapController;
 
 router.get(
   "/get-coordinates",
@@ -23,3 +27,10 @@ router.get(
 );
 
 export default router;
+
+router.get(
+  "/get-suggestions",
+  query("input").isString().isLength({ min: 3 }),
+  authUser,
+  getAutoCompleteSuggestions
+);
