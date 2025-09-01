@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { type } from "os";
 
 const rideSchema = new mongoose.Schema(
   {
@@ -48,6 +49,11 @@ const rideSchema = new mongoose.Schema(
     },
     signature: {
       type: String,
+    },
+    OTP: {
+      type: String,
+      select: false,
+      required: true,
     },
   },
   { timestamps: true }

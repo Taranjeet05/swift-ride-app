@@ -1,6 +1,7 @@
 import rideModel from "../models/ride.model.js";
 import mapService from "../services/maps.service.js";
 import fareRates from "../config/fareRates.js";
+import crypto from "crypto";
 
 const { getDistanceTime } = mapService;
 
@@ -33,6 +34,18 @@ const getFare = async (pickUp, destination) => {
   return fare;
 };
 
+function getOTP(num) {
+  if (!num || num < 1) {
+    throw new Error("Number of digits must be at least 1");
+  }
+
+  // Generate random bytes
+  const otp = crypto.randomInt(0, Math.pow(10, num)).toString();
+
+  // Pad with leading zeros if needed
+  return otp.padStart(num, "0");
+}
+
 const createRide = async ({ user, pickUp, destination, vehicleType }) => {
   if (!user || !pickUp || !destination || !vehicleType) {
     throw new Error("All fields are Required");
@@ -44,6 +57,7 @@ const createRide = async ({ user, pickUp, destination, vehicleType }) => {
     user,
     pickUp,
     destination,
+    OTP : getOTP(4),
     fare: fare[vehicleType],
   });
 
