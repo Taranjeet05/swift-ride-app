@@ -1,13 +1,13 @@
 const fareRates = {
   car: {
-    base: 50, // base fare in EUR cents
-    perKm: 15, // per km rate
-    perMinute: 3, // per minute rate
+    base: 250, // €2.50
+    perKm: 150, // €1.50 per km
+    perMinute: 30, // €0.30 per min
   },
   motorcycle: {
-    base: 20,
-    perKm: 8,
-    perMinute: 1.5,
+    base: 100, // €1.00
+    perKm: 80, // €0.80 per km
+    perMinute: 15, // €0.15 per min
   },
 };
 
