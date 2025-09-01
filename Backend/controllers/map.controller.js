@@ -1,9 +1,11 @@
-import getAddressCoordinate from "../services/maps.service.js";
+import mapService from "../services/maps.service.js";
 import { validationResult } from "express-validator";
+
+const { getAddressCoordinate, getDistanceTime } = mapService;
 
 const getCoordinates = async (req, res, next) => {
   const errors = validationResult(req);
-  if (!errors.isEmpty) {
+  if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
 
@@ -17,4 +19,19 @@ const getCoordinates = async (req, res, next) => {
   }
 };
 
-export default { getCoordinates };
+const getDistanceTimeController = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  const { origin, destination } = req.query;
+  try {
+    const result = await getDistanceTime(origin, destination);
+    res.status(200).json(result);
+  } catch (error) {
+    console.log("Error while getting the DistanceTime", error.message);
+    res.status(404).json({ message: error.message || "Coordinates not found" });
+  }
+};
+
+export default { getCoordinates, getDistanceTimeController };
