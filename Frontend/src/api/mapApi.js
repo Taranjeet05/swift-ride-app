@@ -3,7 +3,7 @@ import API from "./axiosInstance";
 // Get location suggestions
 export const fetchSuggestions = async (input) => {
   const { data } = await API.get(
-    `/maps/suggestions?input=${encodeURIComponent(input)}`
+    `/map/get-suggestions?input=${encodeURIComponent(input)}`
   );
   return data;
 };
@@ -11,7 +11,7 @@ export const fetchSuggestions = async (input) => {
 // Get fare estimate
 export const fetchFare = async (pickup, destination) => {
   const { data } = await API.get(
-    `/maps/distance-time?origin=${encodeURIComponent(
+    `/map/distance-time?origin=${encodeURIComponent(
       pickup
     )}&destination=${encodeURIComponent(destination)}`
   );
