@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import UserLogout from "../components/UserLogout";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -8,13 +8,14 @@ import VehiclePanel from "../components/VehiclePanel";
 import ConfirmRide from "../components/ConfirmRide";
 import LookingForDriver from "../components/LookingForDriver";
 import WaitingForDriver from "../components/WaitingForDriver";
+import useRideStore from "../Store/useRideStore";
+import { fetchSuggestions } from "../api/mapApi";
+import { useQuery } from "@tanstack/react-query";
 
 // Register the ReactPlugin once
 gsap.registerPlugin(useGSAP);
 
 const Home = () => {
-  const [pickUp, setPickUp] = useState("");
-  const [destination, setDestination] = useState("");
   const [panelOpen, setPanelOpen] = useState(false);
   const [vehiclePanelOpen, setVehiclePanelOpen] = useState(false);
   const [confirmRidePanel, setConfirmRidePanel] = useState(false);
@@ -31,6 +32,45 @@ const Home = () => {
   const handlePanelOpen = () => {
     setPanelOpen(true);
   };
+
+  const {
+    pickUp,
+    destination,
+    setPickUp,
+    setDestination,
+    setActiveField,
+    setPickupSuggestions,
+    setDestinationSuggestions,
+  } = useRideStore();
+
+  //pickUp
+  const { data: pickUpSuggestion } = useQuery({
+    queryKey: ["pickUpSuggestion", pickUp],
+    queryFn: () => fetchSuggestions(pickUp),
+    enabled: !!pickUp,
+  });
+
+  // destination
+  const { data: destinationSuggestion } = useQuery({
+    queryKey: ["destinationSuggestion", destination],
+    queryFn: () => fetchSuggestions(destination),
+    enabled: !!destination,
+  });
+
+  // useEffect
+  useEffect(() => {
+    if (pickUpSuggestion) {
+      setPickupSuggestions(pickUpSuggestion);
+    }
+    if (destinationSuggestion) {
+      setDestinationSuggestions(destinationSuggestion);
+    }
+  }, [
+    pickUpSuggestion,
+    destinationSuggestion,
+    setPickupSuggestions,
+    setDestinationSuggestions,
+  ]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -136,7 +176,10 @@ const Home = () => {
               className="bg-[#eee] px-12 py-2 text-lg rounded-lg w-full mt-5"
               value={pickUp}
               onChange={(e) => setPickUp(e.target.value)}
-              onClick={handlePanelOpen}
+              onClick={() => {
+                handlePanelOpen();
+                setActiveField("pickUp");
+              }}
               type="text"
               placeholder="Add a pick-up location"
             />
@@ -144,7 +187,10 @@ const Home = () => {
               className="bg-[#eee] px-12 py-2 text-lg rounded-lg w-full mt-3"
               value={destination}
               onChange={(e) => setDestination(e.target.value)}
-              onClick={handlePanelOpen}
+              onClick={() => {
+                handlePanelOpen();
+                setActiveField("destination");
+              }}
               type="text"
               placeholder="Enter your destination"
             />
