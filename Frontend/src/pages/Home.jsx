@@ -135,6 +135,11 @@ const Home = () => {
     }
   }, [waitingForDriver]);
 
+  const findTrip = () => {
+    setVehiclePanelOpen(true);
+    setPanelOpen(false);
+  };
+
   return (
     <div className="h-screen relative">
       {/*//*in this DIV: We have the uber logo */}
@@ -195,6 +200,12 @@ const Home = () => {
               placeholder="Enter your destination"
             />
           </form>
+          <button
+            onClick={findTrip}
+            className="bg-black py-2 w-[97%] ml-1 text-white mt-4 rounded-lg ring-1 ring-gray-700 active:bg-green-900 font-semibold"
+          >
+            Find Trip
+          </button>
         </div>
         {/* div to handle suggestion for pre destination */}
         <div ref={panelRef} className="bg-white h-0 overflow-hidden">

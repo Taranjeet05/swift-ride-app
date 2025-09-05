@@ -1,7 +1,7 @@
 import React from "react";
 import useRideStore from "../Store/useRideStore";
 
-const LocationSearchPanel = (props) => {
+const LocationSearchPanel = () => {
   const {
     pickupSuggestions,
     destinationSuggestions,
@@ -14,7 +14,7 @@ const LocationSearchPanel = (props) => {
     activeField === "pickUp" ? pickupSuggestions : destinationSuggestions;
 
   return (
-    <div className="overflow-y-auto h-full">
+    <div className="overflow-y-auto h-full mt-7">
       {/* this is just a sample data for location search panel */}
 
       {suggestion.length === 0 ? (
@@ -30,8 +30,6 @@ const LocationSearchPanel = (props) => {
               } else {
                 setDestination(location);
               }
-              props.setVehiclePanelOpen(true);
-              props.setPanelOpen(false);
             }}
             key={index}
             className="flex items-center justify-start border-2 border-gray-50 active:border-black p-3 rounded-xl gap-4 my-2 cursor-pointer "
