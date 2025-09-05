@@ -57,11 +57,11 @@ const createRide = async ({ user, pickUp, destination, vehicleType }) => {
     user,
     pickUp,
     destination,
-    OTP : getOTP(4),
+    OTP: getOTP(4),
     fare: fare[vehicleType],
   });
 
   return ride;
 };
 
-export default { createRide };
+export default { createRide, getFare };

@@ -1,10 +1,10 @@
 import express from "express";
 const router = express.Router();
-import { body } from "express-validator";
+import { body, query } from "express-validator";
 import rideController from "../controllers/ride.controller.js";
 import { authUser } from "../middlewares/auth.middleware.js";
 
-const { createRideController } = rideController;
+const { createRideController, getRideFare } = rideController;
 
 router.post(
   "/create",
@@ -19,6 +19,16 @@ router.post(
     .withMessage("Invalid vehicleType"),
   authUser,
   createRideController
+);
+
+router.get(
+  "/get-fare",
+  authUser,
+  query("pickUp").isLength({ min: 3 }).withMessage("Invalid PickUp location"),
+  query("destination")
+    .isLength({ min: 3 })
+    .withMessage("Invalid destination location"),
+  getRideFare
 );
 
 export default router;
