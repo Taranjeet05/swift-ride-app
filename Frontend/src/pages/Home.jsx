@@ -145,10 +145,16 @@ const Home = () => {
   return (
     <div className="h-screen relative">
       {/*//*in this DIV: We have the uber logo */}
-      <div className="fixed p-6 top-0 left-0 right-0 z-50 flex items-center justify-between w-screen">
-        <img src="/images/uber.svg" alt="uber-log" className="w-16 " />
-        <UserLogout />
-      </div>
+      {!panelOpen &&
+        !vehiclePanelOpen &&
+        !confirmRidePanel &&
+        !vehicleFound &&
+        !waitingForDriver && (
+          <div className="fixed p-6 top-0 flex items-center justify-between w-screen z-20">
+            <img src="/images/uber.svg" alt="uber-log" className="w-16 " />
+            <UserLogout />
+          </div>
+        )}
 
       {/* *** */}
       {/* //*in this DIV: we have the map image for temporary use until api integration */}
