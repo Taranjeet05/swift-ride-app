@@ -136,8 +136,10 @@ const Home = () => {
   }, [waitingForDriver]);
 
   const findTrip = () => {
-    setVehiclePanelOpen(true);
-    setPanelOpen(false);
+    if (pickUp.length >= 3 && destination.length >= 3) {
+      setVehiclePanelOpen(true);
+      setPanelOpen(false);
+    }
   };
 
   return (
