@@ -8,6 +8,7 @@ const VehiclePanel = (props) => {
   const destination = useRideStore((state) => state.destination);
   const fare = useRideStore((state) => state.fare);
   const setFare = useRideStore((state) => state.setFare);
+  const setVehicleType = useRideStore((state) => state.setVehicleType);
 
   const {
     data: fareData,
@@ -47,6 +48,7 @@ const VehiclePanel = (props) => {
       {/* uber-cuv section for temporary use until api integration */}
       <div
         onClick={() => {
+          setVehicleType("car");
           props.setConfirmRidePanel(true);
           props.setVehiclePanelOpen(false);
         }}
@@ -72,6 +74,7 @@ const VehiclePanel = (props) => {
       {/* uber-bike section for temporary use until api integration */}
       <div
         onClick={() => {
+          setVehicleType("motorcycle");
           props.setConfirmRidePanel(true);
           props.setVehiclePanelOpen(false);
         }}
