@@ -1,16 +1,33 @@
 import React from "react";
 import useRideStore from "../Store/useRideStore";
+import { useMutation } from "@tanstack/react-query";
+import { createRide } from "../api/mapApi";
 
 const ConfirmRide = (props) => {
   const pickUp = useRideStore((state) => state.pickUp);
   const destination = useRideStore((state) => state.destination);
   const fare = useRideStore((state) => state.fare);
   const vehicleType = useRideStore((state) => state.vehicleType);
+  const setRide = useRideStore((state) => state.setRide);
 
   const vehicleImage =
     vehicleType === "motorcycle"
       ? "/images/Uber-Bike.webp"
       : "/images/BlackSUV.webp";
+
+  const {
+    mutate: confirmRide,
+    isPending,
+    isError,
+    error,
+  } = useMutation({
+    mutationFn: () => createRide({ pickUp, destination, vehicleType }),
+    onSuccess: (data) => {
+      setRide(data);
+      props.setVehicleFound(true);
+      props.setConfirmRidePanel(false);
+    },
+  });
 
   return (
     <div>
@@ -61,14 +78,15 @@ const ConfirmRide = (props) => {
         </div>
 
         <button
-          onClick={() => {
-            props.setVehicleFound(true);
-            props.setConfirmRidePanel(false);
-          }}
+          onClick={() => confirmRide()}
+          disabled={isPending}
           className="w-full bg-green-600 cursor-pointer text-white font-semibold p-2 rounded-lg mt-1"
         >
-          Confirm Ride
+          {isPending ? "Confirming..." : "Confirm Ride"}
         </button>
+        {isError && (
+          <p className="text-red-600 mt-2">❌{error.message || "Failed"}</p>
+        )}
       </div>
     </div>
   );
