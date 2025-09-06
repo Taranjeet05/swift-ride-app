@@ -145,12 +145,9 @@ const Home = () => {
   return (
     <div className="h-screen relative">
       {/*//*in this DIV: We have the uber logo */}
-      <div>
-        <img
-          src="images/uber.svg"
-          alt="uber-log"
-          className="w-16 absolute left-5 top-5"
-        />
+      <div className="fixed p-6 top-0 left-0 right-0 z-50 flex items-center justify-between w-screen">
+        <img src="/images/uber.svg" alt="uber-log" className="w-16 " />
+        <UserLogout />
       </div>
 
       {/* *** */}
