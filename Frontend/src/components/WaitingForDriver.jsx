@@ -1,6 +1,9 @@
 import React from "react";
+import useRideStore from "../Store/useRideStore";
 
 const WaitingForDriver = (props) => {
+  const pickUp = useRideStore((state) => state.pickUp);
+
   return (
     <div>
       <h5
@@ -38,10 +41,7 @@ const WaitingForDriver = (props) => {
           <div className="flex items-center gap-5 ">
             <i className="text-lg ri-map-pin-2-fill"></i>
             <div>
-              <h3 className="text-lg font-medium">562/11 A</h3>
-              <p className="text-sm -mt-1 text-gray-600">
-                Frankfurt am Main, Germany
-              </p>
+              <h4 className="font-medium">{pickUp || "No pickup selected"}</h4>
             </div>
           </div>
         </div>
