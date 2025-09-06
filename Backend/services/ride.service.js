@@ -25,11 +25,12 @@ const getFare = async (pickUp, destination) => {
   const fare = {};
 
   for (const vehicle in fareRates) {
-    fare[vehicle] = Math.round(
-      fareRates[vehicle].base +
-        distanceKm * fareRates[vehicle].perKm +
-        durationMin * fareRates[vehicle].perMinute
-    );
+    fare[vehicle] =
+      Math.round(
+        fareRates[vehicle].base +
+          distanceKm * fareRates[vehicle].perKm +
+          durationMin * fareRates[vehicle].perMinute
+      ) / 100;
   }
   return fare;
 };
