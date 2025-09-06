@@ -11,7 +11,7 @@ export const fetchSuggestions = async (input) => {
 // Get fare estimate
 export const fetchFare = async (pickup, destination) => {
   const { data } = await API.get(
-    `/map/distance-time?origin=${encodeURIComponent(
+    `/ride/get-fare?pickUp=${encodeURIComponent(
       pickup
     )}&destination=${encodeURIComponent(destination)}`
   );
@@ -20,10 +20,11 @@ export const fetchFare = async (pickup, destination) => {
 
 // Create a ride
 export const createRide = async ({ pickUp, destination, vehicleType }) => {
-  const { data } = await API.post("/rides/create", {
+  const { data } = await API.post("/ride/create", {
     pickUp,
     destination,
     vehicleType,
   });
   return data;
 };
+  
