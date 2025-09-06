@@ -1,6 +1,38 @@
-import React from "react";
+import React, { useEffect } from "react";
+import useRideStore from "../Store/useRideStore";
+import { fetchFare } from "../api/mapApi";
+import { useQuery } from "@tanstack/react-query";
 
 const VehiclePanel = (props) => {
+  const pickUp = useRideStore((state) => state.pickUp);
+  const destination = useRideStore((state) => state.destination);
+  const fare = useRideStore((state) => state.fare);
+  const setFare = useRideStore((state) => state.setFare);
+
+  const {
+    data: fareData,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["fetchFare", pickUp, destination],
+    queryFn: () => fetchFare(pickUp, destination),
+    enabled: !!pickUp && !!destination,
+  });
+
+  useEffect(() => {
+    if (fareData) {
+      setFare(fareData);
+    }
+  }, [fareData, setFare]);
+
+  if (isLoading) {
+    return <p className="p-4">Loading fare...</p>;
+  }
+
+  if (isError) {
+    return <p className="p-4 text-red-500">Failed to fetch fare</p>;
+  }
+
   return (
     <div>
       {" "}
@@ -33,7 +65,9 @@ const VehiclePanel = (props) => {
             Affordable, compact rides
           </p>
         </div>
-        <h2 className="text-lg font-semibold">20 €</h2>
+        <h2 className="text-lg font-semibold">
+          {fare?.car ? `${fare.car} €` : "—"}
+        </h2>
       </div>
       {/* uber-bike section for temporary use until api integration */}
       <div
@@ -56,7 +90,9 @@ const VehiclePanel = (props) => {
             Affordable, motorcycle rides
           </p>
         </div>
-        <h2 className="text-lg font-semibold">10 €</h2>
+        <h2 className="text-lg font-semibold">
+          {fare?.motorcycle ? `${fare.motorcycle} €` : "—"}
+        </h2>
       </div>
     </div>
   );
