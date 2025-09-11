@@ -26,6 +26,19 @@ export const loginUser = async (user) => {
   }
 };
 
+export const profileOfUser = async () => {
+  try {
+    const { data } = await API.get("/users/profile",);
+    return data;
+  } catch (error) {
+    console.log(
+      "Error while getting profile of the User",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
 export const logoutUser = async (token) => {
   try {
     const { data } = await API.get("/users/logout", {
