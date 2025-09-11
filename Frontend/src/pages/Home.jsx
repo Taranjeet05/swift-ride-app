@@ -11,6 +11,8 @@ import WaitingForDriver from "../components/WaitingForDriver";
 import useRideStore from "../Store/useRideStore";
 import { fetchSuggestions } from "../api/mapApi";
 import { useQuery } from "@tanstack/react-query";
+import { useSocketStore } from "../Store/useSocketStore";
+import { useUserStore } from "../Store/useUserStore";
 
 // Register the ReactPlugin once
 gsap.registerPlugin(useGSAP);
@@ -42,6 +44,24 @@ const Home = () => {
     setPickupSuggestions,
     setDestinationSuggestions,
   } = useRideStore();
+
+  const { emitEvent } = useSocketStore();
+  const { user } = useUserStore();
+
+  const initSocket = useSocketStore((state) => state.initSocket);
+  const isConnected = useSocketStore((state) => state.isConnected);
+
+  console.log(isConnected);
+
+  useEffect(() => {
+    initSocket();
+  }, [initSocket]);
+
+  useEffect(() => {
+    if (user?._id && isConnected) {
+      emitEvent("join", { userId: user._id, userType: "user" });
+    }
+  }, [user, emitEvent, isConnected]);
 
   //pickUp
   const { data: pickUpSuggestion } = useQuery({
