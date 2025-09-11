@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Start from "./pages/Start";
 import UserLogin from "./pages/UserLogin";
@@ -13,18 +13,8 @@ import CaptainHome from "./pages/CaptainHome";
 import CaptainLogout from "./components/CaptainLogout";
 import Riding from "./pages/Riding";
 import CaptainRiding from "./pages/CaptainRiding";
-import { useUserStore } from "./Store/useUserStore";
-import { useCaptainStore } from "./Store/useCaptainStore";
 
 const App = () => {
-  const initializeUser = useUserStore((state) => state.initializeUser);
-  const initializeCaptain = useCaptainStore((state) => state.initializeCaptain);
-
-  useEffect(() => {
-    initializeUser();
-    initializeCaptain();
-  }, [initializeUser, initializeCaptain]);
-
   return (
     <div>
       <Routes>

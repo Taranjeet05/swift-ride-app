@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CaptainLogout from "../components/CaptainLogout";
 import CaptainDetail from "../components/CaptainDetails";
 import RidePopUp from "../components/RidePopUp";
 import ConfirmRidePopUp from "../components/ConfirmRidePopUp";
+import { useSocketStore } from "../Store/useSocketStore";
+import { useCaptainStore } from "../Store/useCaptainStore";
 
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -14,6 +16,28 @@ const CaptainHome = () => {
 
   const ridePopUpPanelRef = useRef(null);
   const confirmRidePopUpRef = useRef(null);
+
+  const initializeCaptain = useCaptainStore((state) => state.initializeCaptain);
+
+  useEffect(() => {
+    initializeCaptain();
+  }, [initializeCaptain]);
+
+  const { emitEvent } = useSocketStore();
+  const { captain } = useCaptainStore();
+
+  const initSocket = useSocketStore((state) => state.initSocket);
+  const isConnected = useSocketStore((state) => state.isConnected);
+
+  useEffect(() => {
+    initSocket();
+  }, [initSocket]);
+
+  useEffect(() => {
+    if (captain?._id && isConnected) {
+      emitEvent("join", { userId: captain._id, userType: "captain" });
+    }
+  }, [captain, emitEvent, isConnected]);
 
   useGSAP(() => {
     if (ridePopUpPanel) {

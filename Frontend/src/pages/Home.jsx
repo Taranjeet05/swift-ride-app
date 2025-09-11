@@ -34,6 +34,7 @@ const Home = () => {
   const handlePanelOpen = () => {
     setPanelOpen(true);
   };
+  const initializeUser = useUserStore((state) => state.initializeUser);
 
   const {
     pickUp,
@@ -52,6 +53,10 @@ const Home = () => {
   const isConnected = useSocketStore((state) => state.isConnected);
 
   console.log(isConnected);
+
+  useEffect(() => {
+    initializeUser();
+  }, [initializeUser]);
 
   useEffect(() => {
     initSocket();
