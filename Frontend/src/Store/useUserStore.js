@@ -1,7 +1,13 @@
 import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 
-export const useUserStore = create((set) => ({
-  user: null,
-  setUser: (user) => set({ user }),
-  clearUser: () => set({ user: null }),
-}));
+export const useUserStore = create(
+  devtools(
+    (set) => ({
+      user: null,
+      setUser: (user) => set({ user }),
+      clearUser: () => set({ user: null }),
+    }),
+    { name: "UserStore" }
+  )
+);
