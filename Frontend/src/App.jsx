@@ -14,13 +14,16 @@ import CaptainLogout from "./components/CaptainLogout";
 import Riding from "./pages/Riding";
 import CaptainRiding from "./pages/CaptainRiding";
 import { useUserStore } from "./Store/useUserStore";
+import { useCaptainStore } from "./Store/useCaptainStore";
 
 const App = () => {
   const initializeUser = useUserStore((state) => state.initializeUser);
+  const initializeCaptain = useCaptainStore((state) => state.initializeCaptain);
 
   useEffect(() => {
     initializeUser();
-  }, [initializeUser]);
+    initializeCaptain();
+  }, [initializeUser, initializeCaptain]);
 
   return (
     <div>
