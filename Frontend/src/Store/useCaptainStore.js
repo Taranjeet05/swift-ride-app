@@ -14,7 +14,7 @@ export const useCaptainStore = create(
         // we need to check if token is there is not token we need to stop
         //then we need to get the profileOfCaptain
         // then set captain with that data
-        const token = localStorage.getItem("token", token);
+        const token = localStorage.getItem("token");
         if (!token) return;
 
         try {
