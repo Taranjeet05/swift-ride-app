@@ -26,6 +26,18 @@ export const loginCaptain = async (captain) => {
   }
 };
 
+export const profileOfCaptain = async () => {
+  try {
+    const { data } = await API.get("/captains/profile");
+    return data;
+  } catch (error) {
+    console.log(
+      "Error while fetching the Captain Profile",
+      error?.data || error.message
+    );
+  }
+};
+
 export const logoutCaptain = async (token) => {
   try {
     const { data } = await API.get("/captains/logout", {
