@@ -2,6 +2,7 @@ import rideService from "../services/ride.service.js";
 import { validationResult } from "express-validator";
 import mapsService from "../services/maps.service.js";
 import socket from "../socket.js";
+import rideModel from "../models/ride.model.js";
 
 const { createRide, getFare } = rideService;
 const { getCaptainsInTheRadius, getAddressCoordinate } = mapsService;
@@ -39,12 +40,16 @@ const createRideController = async (req, res) => {
 
     ride.otp = "";
 
+    const rideWithUser = await rideModel
+      .findOne({ _id: ride._id })
+      .populate("user");
+
     captainsInRadius.map((captain) => {
       // debug console:
       console.log("Check captain & ride", captain, ride);
       sendMessageToSocketId(captain.socketId, {
         event: "new-ride",
-        data: ride,
+        data: rideWithUser,
       });
     });
   } catch (error) {
