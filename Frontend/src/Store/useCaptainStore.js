@@ -9,11 +9,13 @@ export const useCaptainStore = create(
       setCaptain: (captain) => set({ captain }),
       clearCaptain: () => set({ captain: null }),
 
+      // Ride state
+      currentRide: null,
+      setCurrentRide: (ride) => set({ currentRide: ride }),
+      clearCurrentRide: () => set({ currentRide: null }),
+
       // initialize CAPTAIN
       initializeCaptain: async () => {
-        // we need to check if token is there is not token we need to stop
-        //then we need to get the profileOfCaptain
-        // then set captain with that data
         const token = localStorage.getItem("token");
         if (!token) return;
 

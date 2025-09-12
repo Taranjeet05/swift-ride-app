@@ -24,7 +24,7 @@ const CaptainHome = () => {
   }, [initializeCaptain]);
 
   const { emitEvent, onEvent } = useSocketStore();
-  const { captain } = useCaptainStore();
+  const { captain, setCurrentRide } = useCaptainStore();
 
   const initSocket = useSocketStore((state) => state.initSocket);
   const isConnected = useSocketStore((state) => state.isConnected);
@@ -60,10 +60,11 @@ const CaptainHome = () => {
     onEvent("new-ride", (data) => {
       //debug console
       console.log("Check new-ride DATA", data);
+      setCurrentRide(data);
     });
 
     return () => clearInterval(locationInterval);
-  }, [captain, emitEvent, isConnected, onEvent]);
+  }, [captain, emitEvent, isConnected, onEvent, setCurrentRide]); 
 
   useGSAP(() => {
     if (ridePopUpPanel) {
