@@ -22,7 +22,7 @@ export const useCaptainStore = create(
           set({ captain: data?.captain || data });
         } catch (error) {
           console.log("Failed to fetch Captain Profile", error);
-          set({ Captain: null });
+          set({ captain: null });
         }
       },
     }),
