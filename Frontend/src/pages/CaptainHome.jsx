@@ -23,7 +23,7 @@ const CaptainHome = () => {
     initializeCaptain();
   }, [initializeCaptain]);
 
-  const { emitEvent } = useSocketStore();
+  const { emitEvent, onEvent } = useSocketStore();
   const { captain } = useCaptainStore();
 
   const initSocket = useSocketStore((state) => state.initSocket);
@@ -34,10 +34,36 @@ const CaptainHome = () => {
   }, [initSocket]);
 
   useEffect(() => {
-    if (captain?._id && isConnected) {
-      emitEvent("join", { userId: captain._id, userType: "captain" });
-    }
-  }, [captain, emitEvent, isConnected]);
+    if (!captain?._id || !isConnected) return;
+
+    emitEvent("join", { userId: captain._id, userType: "captain" });
+
+    const updateLocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          const { latitude, longitude } = position.coords;
+
+          emitEvent("update-location-captain", {
+            userId: captain._id,
+            location: {
+              lat: latitude,
+              lng: longitude,
+            },
+          });
+        });
+      }
+    };
+
+    const locationInterval = setInterval(updateLocation, 10000);
+    updateLocation();
+
+    onEvent("new-ride", (data) => {
+      //debug console
+      console.log("Check new-ride DATA", data);
+    });
+
+    return () => clearInterval(locationInterval);
+  }, [captain, emitEvent, isConnected, onEvent]);
 
   useGSAP(() => {
     if (ridePopUpPanel) {
