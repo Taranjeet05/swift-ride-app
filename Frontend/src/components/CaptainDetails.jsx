@@ -1,6 +1,13 @@
 import React from "react";
+import { useCaptainStore } from "../Store/useCaptainStore";
 
 const CaptainDetail = () => {
+  const captain = useCaptainStore((state) => state.captain);
+
+  if (!captain) {
+    return <p className="text-gray-500">Loading captain details...</p>;
+  }
+
   return (
     <div>
       <div className="flex items-center justify-between">
@@ -10,7 +17,9 @@ const CaptainDetail = () => {
             src="https://cdn.pixabay.com/photo/2024/06/22/23/01/boy-8847075_640.jpg"
             alt=""
           />
-          <h2 className="text-lg font-medium">HENRY</h2>
+          <h2 className="text-lg font-medium">
+            {captain?.fullName?.firstName} {captain?.fullName?.lastName}
+          </h2>
         </div>
 
         <div>
