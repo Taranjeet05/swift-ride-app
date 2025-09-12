@@ -11,7 +11,7 @@ import gsap from "gsap";
 import { useRef } from "react";
 
 const CaptainHome = () => {
-  const [ridePopUpPanel, setRidePopUpPanel] = useState(true);
+  const [ridePopUpPanel, setRidePopUpPanel] = useState(false);
   const [confirmRidePopUpPanel, setConfirmRidePopUpPanel] = useState(false);
 
   const ridePopUpPanelRef = useRef(null);
@@ -61,10 +61,11 @@ const CaptainHome = () => {
       //debug console
       console.log("Check new-ride DATA", data);
       setCurrentRide(data);
+      setRidePopUpPanel(true);
     });
 
     return () => clearInterval(locationInterval);
-  }, [captain, emitEvent, isConnected, onEvent, setCurrentRide]); 
+  }, [captain, emitEvent, isConnected, onEvent, setCurrentRide]);
 
   useGSAP(() => {
     if (ridePopUpPanel) {
