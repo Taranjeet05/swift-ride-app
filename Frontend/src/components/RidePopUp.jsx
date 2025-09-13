@@ -1,6 +1,18 @@
 import React from "react";
+import { useCaptainStore } from "../Store/useCaptainStore";
 
 const RidePopUp = (props) => {
+  const clearCurrentRide = useCaptainStore((state) => state.clearCurrentRide);
+  const currentRide = useCaptainStore((state) => state.currentRide);
+
+  if (!currentRide) {
+    return (
+      <div className="p-4">
+        <p className="text-gray-500 text-center">No active ride available</p>
+      </div>
+    );
+  }
+
   return (
     <div>
       <h5
@@ -21,7 +33,8 @@ const RidePopUp = (props) => {
             alt="Passenger profile picture"
           />
           <h2 className="text-xl text-gray-100 drop-shadow-md font-medium">
-            EMILY GARLAND
+            {currentRide?.user?.fullName?.firstName}{" "}
+            {currentRide?.user?.fullName?.lastName}
           </h2>
         </div>
         <div className="bg-gray-900 py-2 px-4 text-white rounded-bl-3xl rounded-sm shadow-md ring-1 ring-gray-700">
@@ -36,27 +49,25 @@ const RidePopUp = (props) => {
           <div className="flex items-center gap-5 ">
             <i className="text-lg ri-map-pin-2-fill"></i>
             <div>
-              <h3 className="text-lg font-medium">562/11 A</h3>
-              <p className="text-sm -mt-1 text-gray-600">
-                Frankfurt am Main, Germany
-              </p>
+              <h4 className="font-medium">
+                {currentRide?.pickUp || "No pickup selected"}
+              </h4>
             </div>
           </div>
 
           <div className="flex items-center gap-5">
             <i className="ri-map-pin-user-fill"></i>
             <div>
-              <h3 className="text-lg font-medium">Terminal 1</h3>
-              <p className="text-sm -mt-1 text-gray-600">
-                Frankfurt Airport, 60549 Germany
-              </p>
+              <h4 className="font-medium">
+                {currentRide?.destination || "No pickup selected"}
+              </h4>
             </div>
           </div>
 
           <div className="flex items-center gap-5">
             <i className="ri-currency-line"></i>
             <div>
-              <h3 className="text-lg font-medium">20 €</h3>
+              <h3 className="text-lg font-medium">{currentRide?.fare}</h3>
               <p className="text-sm -mt-1 text-gray-600">Cash Cash</p>
             </div>
           </div>
@@ -65,6 +76,7 @@ const RidePopUp = (props) => {
         <div className="w-full flex items-center justify-evenly gap-4">
           <button
             onClick={() => {
+              clearCurrentRide();
               props.setRidePopUpPanel(false);
             }}
             className="flex-1 bg-gray-300 hover:bg-gray-400 transition cursor-pointer text-gray-700 font-semibold p-2 rounded-lg mt-1"

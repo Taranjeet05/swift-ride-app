@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useCaptainStore } from "../Store/useCaptainStore";
 
 const ConfirmRidePopUp = (props) => {
   const navigate = useNavigate();
@@ -11,6 +12,18 @@ const ConfirmRidePopUp = (props) => {
 
     navigate("/captain-riding");
   };
+
+  const clearCurrentRide = useCaptainStore((state) => state.clearCurrentRide);
+  const currentRide = useCaptainStore((state) => state.currentRide);
+
+    if (!currentRide) {
+    return (
+      <div className="p-4">
+        <p className="text-gray-500 text-center">No active ride available</p>
+      </div>
+    );
+  }
+
 
   return (
     <div>
@@ -39,7 +52,8 @@ const ConfirmRidePopUp = (props) => {
             alt="Passenger profile picture"
           />
           <h2 className="text-xl text-gray-100 drop-shadow-md font-medium">
-            EMILY GARLAND
+            {currentRide?.user?.fullName?.firstName}{" "}
+            {currentRide?.user?.fullName?.lastName}
           </h2>
         </div>
         <div className="bg-gray-900 py-2 px-4 text-white rounded-bl-3xl rounded-sm shadow-md ring-1 ring-gray-700">
@@ -54,27 +68,25 @@ const ConfirmRidePopUp = (props) => {
           <div className="flex items-center gap-5 ">
             <i className="text-lg ri-map-pin-2-fill"></i>
             <div>
-              <h3 className="text-lg font-medium">562/11 A</h3>
-              <p className="text-sm -mt-1 text-gray-600">
-                Frankfurt am Main, Germany
-              </p>
+              <h4 className="font-medium">
+                {currentRide?.pickUp || "No pickup selected"}
+              </h4>
             </div>
           </div>
 
           <div className="flex items-center gap-5">
             <i className="ri-map-pin-user-fill"></i>
             <div>
-              <h3 className="text-lg font-medium">Terminal 1</h3>
-              <p className="text-sm -mt-1 text-gray-600">
-                Frankfurt Airport, 60549 Germany
-              </p>
+              <h4 className="font-medium">
+                {currentRide?.destination || "No pickup selected"}
+              </h4>
             </div>
           </div>
 
           <div className="flex items-center gap-5">
             <i className="ri-currency-line"></i>
             <div>
-              <h3 className="text-lg font-medium">20 €</h3>
+              <h3 className="text-lg font-medium">{currentRide?.fare}</h3>
               <p className="text-sm -mt-1 text-gray-600">Cash Cash</p>
             </div>
           </div>
@@ -104,7 +116,10 @@ const ConfirmRidePopUp = (props) => {
             {/* Cancel button */}
             <button
               type="button"
-              onClick={() => props.setConfirmRidePopUpPanel(false)}
+              onClick={() => {
+                clearCurrentRide();
+                props.setConfirmRidePopUpPanel(false);
+              }}
               className="flex-1 bg-red-600 hover:bg-red-700 transition cursor-pointer text-white font-semibold p-2 rounded-lg mt-1"
             >
               Cancel
