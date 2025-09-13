@@ -2,9 +2,9 @@ import express from "express";
 const router = express.Router();
 import { body, query } from "express-validator";
 import rideController from "../controllers/ride.controller.js";
-import { authUser } from "../middlewares/auth.middleware.js";
+import { authCaptain, authUser } from "../middlewares/auth.middleware.js";
 
-const { createRideController, getRideFare } = rideController;
+const { createRideController, getRideFare, confirmRide } = rideController;
 
 router.post(
   "/create",
@@ -29,6 +29,13 @@ router.get(
     .isLength({ min: 3 })
     .withMessage("Invalid destination location"),
   getRideFare
+);
+
+router.post(
+  "/confirm",
+  authCaptain,
+  body("rideId").isMongoId().withMessage("Invalid Ride Id"),
+  confirmRide
 );
 
 export default router;

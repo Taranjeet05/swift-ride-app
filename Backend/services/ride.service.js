@@ -65,4 +65,28 @@ const createRide = async ({ user, pickUp, destination, vehicleType }) => {
   return ride;
 };
 
-export default { createRide, getFare };
+const confirmRideService = async ({ rideId, captain }) => {
+  if (!rideId) {
+    throw new Error("Ride Id is required");
+  }
+
+  await rideModel.findOneAndUpdate(
+    { _id: rideId, status: "pending" },
+    { status: "accepted", captain: captain._id },
+    { new: true }
+  );
+
+  const ride = await rideModel
+    .findOne({
+      _id: rideId,
+    })
+    .populate("user")
+    .populate("captain")
+    .select("+OTP");
+  if (!ride) {
+    throw new Error("Ride not found or already accepted");
+  }
+  return ride;
+};
+
+export default { createRide, getFare, confirmRideService };

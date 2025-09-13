@@ -3,10 +3,10 @@ import { validationResult } from "express-validator";
 import mapsService from "../services/maps.service.js";
 import socket from "../socket.js";
 import rideModel from "../models/ride.model.js";
+import sendMessageToSocketId from "../socket.js";
 
-const { createRide, getFare } = rideService;
+const { createRide, getFare, confirmRideService } = rideService;
 const { getCaptainsInTheRadius, getAddressCoordinate } = mapsService;
-const { sendMessageToSocketId } = socket;
 
 const createRideController = async (req, res) => {
   const errors = validationResult(req);
@@ -75,4 +75,26 @@ const getRideFare = async (req, res) => {
   }
 };
 
-export default { createRideController, getRideFare };
+const confirmRide = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  const { rideId } = req.body;
+  try {
+    const ride = await confirmRideService({ rideId, captain: req.captain });
+
+    if (ride.user?.socketId) {
+      sendMessageToSocketId(ride.user.socketId, {
+        event: "ride-confirmed",
+        data: ride,
+      });
+    }
+    return res.status(200).json(ride);
+  } catch (error) {
+    console.log("Error while Confirming Ride", error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export default { createRideController, getRideFare, confirmRide };
