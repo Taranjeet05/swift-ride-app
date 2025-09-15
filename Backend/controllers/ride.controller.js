@@ -3,7 +3,8 @@ import { validationResult } from "express-validator";
 import mapsService from "../services/maps.service.js";
 import socket from "../socket.js";
 import rideModel from "../models/ride.model.js";
-import sendMessageToSocketId from "../socket.js";
+
+const { sendMessageToSocketId } = socket;
 
 const { createRide, getFare, confirmRideService } = rideService;
 const { getCaptainsInTheRadius, getAddressCoordinate } = mapsService;
@@ -38,7 +39,7 @@ const createRideController = async (req, res) => {
     // debug console:
     console.log("check captainInRadius", captainsInRadius);
 
-    ride.otp = "";
+    ride.OTP = "";
 
     const rideWithUser = await rideModel
       .findOne({ _id: ride._id })
