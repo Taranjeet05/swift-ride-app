@@ -27,4 +27,17 @@ export const createRide = async ({ pickUp, destination, vehicleType }) => {
   });
   return data;
 };
-  
+
+// confirm ride by Captain
+export const confirmRide = async ({ rideId }) => {
+  const { data } = await API.post(
+    "/ride/confirm",
+    { rideId },
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }
+  );
+  return data;
+};
