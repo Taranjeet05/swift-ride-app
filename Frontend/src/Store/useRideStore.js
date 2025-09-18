@@ -13,6 +13,8 @@ const useRideStore = create(
       destinationSuggestions: [],
       activeField: "pickUp", // to track which input is active
 
+      confirmedRide: null, //Store the confirmed ride data
+
       setPickUp: (pickUp) => set({ pickUp }),
       setDestination: (destination) => set({ destination }),
       setVehicleType: (vehicleType) => set({ vehicleType }),
@@ -22,6 +24,7 @@ const useRideStore = create(
       setDestinationSuggestions: (destinationSuggestions) =>
         set({ destinationSuggestions }),
       setActiveField: (field) => set({ activeField: field }),
+      setConfirmedRide: (ride) => set({ confirmedRide: ride }),
     }),
     { name: "RideStore" }
   )
