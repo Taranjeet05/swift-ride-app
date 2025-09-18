@@ -25,7 +25,6 @@ const createRideController = async (req, res) => {
       destination,
       vehicleType,
     });
-    res.status(201).json(ride);
 
     const pickUpCoordinates = await getAddressCoordinate(pickUp);
     // debug console:
@@ -34,7 +33,7 @@ const createRideController = async (req, res) => {
     const captainsInRadius = await getCaptainsInTheRadius(
       pickUpCoordinates.lat,
       pickUpCoordinates.lng,
-      2
+      50
     );
     // debug console:
     console.log("check captainInRadius", captainsInRadius);
@@ -44,7 +43,13 @@ const createRideController = async (req, res) => {
     const rideWithUser = await rideModel
       .findOne({ _id: ride._id })
       .populate("user");
+    console.log("User socketId", rideWithUser.user.socketId);
 
+    if (!captainsInRadius || captainsInRadius.length === 0) {
+      return res.status(404).json({
+        message: "No captains available nearby",
+      });
+    }
     captainsInRadius.map((captain) => {
       // debug console:
       console.log("Check captain & ride", captain, ride);
@@ -53,6 +58,7 @@ const createRideController = async (req, res) => {
         data: rideWithUser,
       });
     });
+    return res.status(201).json(rideWithUser);
   } catch (error) {
     console.log("Error while creating Ride", error.message);
     res.status(500).json({ message: error.message });
