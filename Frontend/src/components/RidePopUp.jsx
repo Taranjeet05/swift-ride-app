@@ -1,5 +1,6 @@
 import React from "react";
 import { useCaptainStore } from "../Store/useCaptainStore";
+import { confirmRide } from "../api/mapApi";
 
 const RidePopUp = (props) => {
   const clearCurrentRide = useCaptainStore((state) => state.clearCurrentRide);
@@ -12,6 +13,15 @@ const RidePopUp = (props) => {
       </div>
     );
   }
+
+  const handleConfirmRide = async () => {
+    try {
+      const ride = await confirmRide({ rideId: currentRide._id });
+      console.log("Ride confirmed:", ride);
+    } catch (error) {
+      console.error("Failed: to confirm Ride", error.message);
+    }
+  };
 
   return (
     <div>
@@ -85,6 +95,7 @@ const RidePopUp = (props) => {
           </button>
           <button
             onClick={() => {
+              handleConfirmRide();
               props.setRidePopUpPanel(false);
               props.setConfirmRidePopUpPanel(true);
             }}
