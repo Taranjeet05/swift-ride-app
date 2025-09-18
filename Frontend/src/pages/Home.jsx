@@ -44,9 +44,10 @@ const Home = () => {
     setActiveField,
     setPickupSuggestions,
     setDestinationSuggestions,
+    setConfirmedRide,
   } = useRideStore();
 
-  const { emitEvent } = useSocketStore();
+  const { emitEvent, onEvent } = useSocketStore();
   const { user } = useUserStore();
 
   const initSocket = useSocketStore((state) => state.initSocket);
@@ -67,6 +68,15 @@ const Home = () => {
       emitEvent("join", { userId: user._id, userType: "user" });
     }
   }, [user, emitEvent, isConnected]);
+
+  useEffect(() => {
+    const cleanup = onEvent("ride-confirmed", (rideData) => {
+      console.log("Ride confirmed by Captain:", rideData);
+      setConfirmedRide(rideData);
+    });
+
+    return () => cleanup();
+  }, [onEvent, setConfirmedRide]);
 
   //pickUp
   const { data: pickUpSuggestion } = useQuery({
@@ -135,18 +145,6 @@ const Home = () => {
   useGSAP(() => {
     if (vehicleFound) {
       gsap.to(vehicleFoundRef.current, { y: "0%" });
-
-      const timer = setTimeout(() => {
-        gsap.to(vehicleFoundRef.current, {
-          y: "100%",
-          onComplete: () => {
-            setVehicleFound(false);
-            setWaitingForDriver(true);
-          },
-        });
-      }, 3000);
-
-      return () => clearTimeout(timer);
     } else {
       gsap.to(vehicleFoundRef.current, { translateY: "100%" });
     }
