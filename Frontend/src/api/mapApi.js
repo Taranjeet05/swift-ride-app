@@ -20,11 +20,19 @@ export const fetchFare = async (pickup, destination) => {
 
 // Create a ride
 export const createRide = async ({ pickUp, destination, vehicleType }) => {
-  const { data } = await API.post("/ride/create", {
-    pickUp,
-    destination,
-    vehicleType,
-  });
+  const { data } = await API.post(
+    "/ride/create",
+    {
+      pickUp,
+      destination,
+      vehicleType,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }
+  );
   return data;
 };
 
