@@ -2,7 +2,9 @@ import API from "./axiosInstance";
 
 export const SignupCaptain = async (newCaptain) => {
   try {
-    const { data } = await API.post("/captains/register", newCaptain);
+    const { data } = await API.post("/captains/register", newCaptain, {
+      tokenKey: "Captain_Token_Key",
+    });
     return data;
   } catch (error) {
     console.log(
@@ -15,7 +17,9 @@ export const SignupCaptain = async (newCaptain) => {
 
 export const loginCaptain = async (captain) => {
   try {
-    const { data } = await API.post("/captains/login", captain);
+    const { data } = await API.post("/captains/login", captain, {
+      tokenKey: "Captain_Token_Key",
+    });
     return data;
   } catch (error) {
     console.log(
@@ -28,7 +32,9 @@ export const loginCaptain = async (captain) => {
 
 export const profileOfCaptain = async () => {
   try {
-    const { data } = await API.get("/captains/profile");
+    const { data } = await API.get("/captains/profile", {
+      tokenKey: "Captain_Token_Key",
+    });
     return data;
   } catch (error) {
     console.log(

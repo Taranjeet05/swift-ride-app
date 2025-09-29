@@ -4,9 +4,9 @@ const API = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL || "http://localhost:5000",
 });
 
-// Add a token to every request if available
 API.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
+  const tokenKey = config.tokenKey || "User_Token_Key"; // default to user
+  const token = localStorage.getItem(tokenKey);
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }

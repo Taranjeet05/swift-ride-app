@@ -5,9 +5,7 @@ export const fetchSuggestions = async (input) => {
   const { data } = await API.get(
     `/map/get-suggestions?input=${encodeURIComponent(input)}`,
     {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
+      tokenKey: "User_Token_Key",
     }
   );
   return data;
@@ -20,9 +18,7 @@ export const fetchFare = async (pickup, destination) => {
       pickup
     )}&destination=${encodeURIComponent(destination)}`,
     {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
+      tokenKey: "User_Token_Key",
     }
   );
   return data;
@@ -38,9 +34,7 @@ export const createRide = async ({ pickUp, destination, vehicleType }) => {
       vehicleType,
     },
     {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
+      tokenKey: "User_Token_Key",
     }
   );
   return data;
@@ -52,9 +46,7 @@ export const confirmRide = async ({ rideId, captainId }) => {
     "/ride/confirm",
     { rideId, captainId },
     {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
+      tokenKey: "Captain_Token_Key",
     }
   );
   return data;

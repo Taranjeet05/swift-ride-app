@@ -2,7 +2,7 @@ import API from "./axiosInstance";
 
 export const signupUser = async (newUser) => {
   try {
-    const { data } = await API.post("/users/register", newUser);
+    const { data } = await API.post("/users/register", newUser,{ tokenKey: "User_Token_Key",});
     return data;
   } catch (error) {
     console.error(
@@ -15,7 +15,7 @@ export const signupUser = async (newUser) => {
 
 export const loginUser = async (user) => {
   try {
-    const { data } = await API.post("/users/login", user);
+    const { data } = await API.post("/users/login", user,{ tokenKey: "User_Token_Key",});
     return data;
   } catch (error) {
     console.log(
@@ -28,7 +28,7 @@ export const loginUser = async (user) => {
 
 export const profileOfUser = async () => {
   try {
-    const { data } = await API.get("/users/profile",);
+    const { data } = await API.get("/users/profile",{ tokenKey: "User_Token_Key",});
     return data;
   } catch (error) {
     console.log(
