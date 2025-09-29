@@ -15,7 +15,7 @@ const CaptainLogin = () => {
     mutationFn: loginCaptain,
     onSuccess: (data) => {
       setCaptain(data.captain);
-      localStorage.setItem("token", data.token);
+      localStorage.setItem("Captain_Token_Key", data.token);
       navigate("/captain-home");
       setEmail("");
       setPassword("");

@@ -17,7 +17,7 @@ const UserSignup = () => {
     mutationFn: signupUser,
     onSuccess: (data) => {
       setUser(data.user);
-      localStorage.setItem("token", data.token);
+      localStorage.setItem("User_Token_Key", data.token);
       navigate("/home");
     },
   });

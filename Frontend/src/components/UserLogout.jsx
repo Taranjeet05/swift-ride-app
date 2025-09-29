@@ -16,7 +16,7 @@ const UserLogout = () => {
     onSuccess: () => {
       // clear local state and storage on successful logout
       clearUser();
-      localStorage.removeItem("token");
+      localStorage.removeItem("User_Token_Key");
       // clear query cache
       queryClient.clear();
       // redirect to login page
@@ -27,7 +27,7 @@ const UserLogout = () => {
       console.log("Error while logging out:", error.message);
       // fallback : clear everything anyway
       clearUser();
-      localStorage.removeItem("token");
+      localStorage.removeItem("User_Token_Key");
       // clear query cache
       queryClient.clear();
       // redirect to login Page
@@ -36,7 +36,7 @@ const UserLogout = () => {
   });
 
   const handleLogOut = async () => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("User_Token_Key");
     if (!token) {
       clearUser();
       navigate("/login");

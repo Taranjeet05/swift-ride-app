@@ -22,7 +22,7 @@ const CaptainSignup = () => {
     mutationFn: SignupCaptain,
     onSuccess: (data) => {
       setCaptain(data.captain);
-      localStorage.setItem("token", data.token);
+      localStorage.setItem("Captain_Token_Key", data.token);
       navigate("/captain-home");
       setEmail("");
       setFirstName("");

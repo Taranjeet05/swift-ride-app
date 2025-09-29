@@ -16,7 +16,7 @@ const CaptainLogout = () => {
     onSuccess: () => {
       // clear local state and storage on successful logout
       clearCaptain();
-      localStorage.removeItem("token");
+      localStorage.removeItem("Captain_Token_Key");
       // clear query cache
       queryClient.clear();
       // redirect to login page
@@ -27,7 +27,7 @@ const CaptainLogout = () => {
       console.log("Error while logging out:", error.message);
       // fallback : clear everything anyway
       clearCaptain();
-      localStorage.removeItem("token");
+      localStorage.removeItem("Captain_Token_Key");
       // clear query cache
       queryClient.clear();
       // redirect to login page
@@ -36,7 +36,7 @@ const CaptainLogout = () => {
   });
 
   const handleLogOut = async () => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("Captain_Token_Key");
     if (!token) {
       clearCaptain();
       navigate("/captain-login");
