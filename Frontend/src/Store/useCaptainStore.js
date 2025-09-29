@@ -16,7 +16,7 @@ export const useCaptainStore = create(
 
       // initialize CAPTAIN
       initializeCaptain: async () => {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("Captain_Token_Key");
         if (!token) return;
 
         try {
