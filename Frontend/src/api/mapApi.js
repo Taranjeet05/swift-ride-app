@@ -37,10 +37,10 @@ export const createRide = async ({ pickUp, destination, vehicleType }) => {
 };
 
 // confirm ride by Captain
-export const confirmRide = async ({ rideId }) => {
+export const confirmRide = async ({ rideId, captainId }) => {
   const { data } = await API.post(
     "/ride/confirm",
-    { rideId },
+    { rideId, captainId },
     {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
