@@ -82,7 +82,7 @@ const getCaptainsInTheRadius = async (lat, lng, radius) => {
     const captains = await captainModel.find({
       location: {
         $geoWithin: {
-          $centerSphere: [[lat, lng], radius / 6371],// radius in km
+          $centerSphere: [[lng, lat], radius / 6371],
         },
       },
     });
