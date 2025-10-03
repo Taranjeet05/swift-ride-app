@@ -60,8 +60,8 @@ const initializeSocket = (server) => {
           userId,
           {
             location: {
-              lat: location.lat,
-              lng: location.lng,
+              type: "Point",
+              coordinates: [location.lng, location.lat],
             },
           },
           { new: true }
