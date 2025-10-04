@@ -6,7 +6,7 @@ const WaitingForDriver = (props) => {
 
   if (!confirmedRide) return null;
 
-  const { pickUp, captain } = confirmedRide;
+  const { pickUp, captain, fare, destination } = confirmedRide;
 
   return (
     <div>
@@ -50,6 +50,23 @@ const WaitingForDriver = (props) => {
             <i className="text-lg ri-map-pin-2-fill"></i>
             <div>
               <h4 className="font-medium">{pickUp || "No pickup selected"}</h4>
+            </div>
+          </div>
+          <div className="flex items-center gap-5">
+            <i className="ri-map-pin-user-fill"></i>
+            <div>
+              <h4 className="font-medium">
+                {destination || "No destination selected"}
+              </h4>
+            </div>
+          </div>
+          <div className="flex items-center gap-5">
+            <i className="ri-currency-line"></i>
+            <div>
+              <h3 className="text-lg font-medium">
+                {fare?.toFixed(2) || "0.00"} €
+              </h3>
+              <p className="text-sm -mt-1 text-gray-600">Cash Cash</p>
             </div>
           </div>
         </div>
