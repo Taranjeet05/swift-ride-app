@@ -53,30 +53,38 @@ const Home = () => {
   const initSocket = useSocketStore((state) => state.initSocket);
   const isConnected = useSocketStore((state) => state.isConnected);
 
+  //debug console
   console.log(isConnected);
+  //debug console
+  console.log("JOIN attempt", { user, isConnected });
 
   useEffect(() => {
-    initializeUser();
-  }, [initializeUser]);
-
-  useEffect(() => {
-    initSocket();
-  }, [initSocket]);
+    const setup = async () => {
+      await initializeUser();
+      initSocket();
+    };
+    setup();
+  }, [initializeUser, initSocket]);
 
   useEffect(() => {
     if (user?._id && isConnected) {
+      // debug console:
+      console.log("Emitting join event for user:", user._id);
       emitEvent("join", { userId: user._id, userType: "user" });
     }
   }, [user, emitEvent, isConnected]);
 
   useEffect(() => {
     const cleanup = onEvent("ride-confirmed", (rideData) => {
+      if(!isConnected) return
       console.log("Ride confirmed by Captain:", rideData);
       setConfirmedRide(rideData);
+      setVehicleFound(false);
+      setWaitingForDriver(true);
     });
 
     return () => cleanup();
-  }, [onEvent, setConfirmedRide]);
+  }, [onEvent, setConfirmedRide, isConnected]);
 
   //pickUp
   const { data: pickUpSuggestion } = useQuery({
