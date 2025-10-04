@@ -42,6 +42,7 @@ export const useSocketStore = create(
     onEvent: (event, callback) => {
       const socket = get().socket;
 
+      if (!socket) return () => {};
       socket.on(event, callback);
 
       // return cleanUp function so we can remove the listener
