@@ -19,10 +19,6 @@ const CaptainHome = () => {
 
   const initializeCaptain = useCaptainStore((state) => state.initializeCaptain);
 
-  useEffect(() => {
-    initializeCaptain();
-  }, [initializeCaptain]);
-
   const { emitEvent, onEvent } = useSocketStore();
   const { captain, setCurrentRide } = useCaptainStore();
 
@@ -30,11 +26,19 @@ const CaptainHome = () => {
   const isConnected = useSocketStore((state) => state.isConnected);
 
   useEffect(() => {
-    initSocket();
-  }, [initSocket]);
+    const setup = async () => {
+      await initializeCaptain();
+      initSocket();
+    };
+    setup();
+  }, [initializeCaptain, initSocket]);
+  // debug console
+  console.log("JOIN attempt", { captain, isConnected });
 
   useEffect(() => {
     if (!captain?._id || !isConnected) return;
+    // debug console
+    console.log("Emitting join event for user:", captain._id);
 
     emitEvent("join", { userId: captain._id, userType: "captain" });
 
