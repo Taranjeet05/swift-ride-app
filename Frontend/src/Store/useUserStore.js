@@ -12,7 +12,7 @@ export const useUserStore = create(
       // initialize USER
 
       initializeUser: async () => {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("User_Token_Key");
         if (!token) return;
 
         try {
