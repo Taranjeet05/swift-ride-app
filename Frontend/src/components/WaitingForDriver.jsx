@@ -2,7 +2,11 @@ import React from "react";
 import useRideStore from "../Store/useRideStore";
 
 const WaitingForDriver = (props) => {
-  const pickUp = useRideStore((state) => state.pickUp);
+  const confirmedRide = useRideStore((state) => state.confirmedRide);
+
+  if (!confirmedRide) return null;
+
+  const { pickUp, captain } = confirmedRide;
 
   return (
     <div>
@@ -30,8 +34,12 @@ const WaitingForDriver = (props) => {
       <div className="flex items-center justify-between">
         <img src="/images/BlackSUV.webp" alt="uber-suv" className="h-20 mt-1" />
         <div className="text-right">
-          <h2 className="text-xl font-medium text-gray-600">HENRY</h2>
-          <h4 className="text-2xl font-semibold -mt-1 -mb-1">KA15AK00-0</h4>
+          <h2 className="text-xl font-medium text-gray-600">
+            {captain?.fullName?.firstName} {captain?.fullName?.lastName}
+          </h2>
+          <h4 className="text-2xl font-semibold -mt-1 -mb-1">
+            {captain?.vehicle?.plate}
+          </h4>
           <p className="text-lg text-gray-600">BMW X7</p>
         </div>
       </div>
