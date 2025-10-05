@@ -23,6 +23,7 @@ const App = () => {
         <Route path="/signup" element={<UserSignup />} />
         {/* /riding route is for temporary purpose we will fix this later */}
         <Route path="/riding" element={<Riding />} />
+        <Route path="/captain-riding" element={<CaptainRiding />} />
         <Route path="/captain-login" element={<CaptainLogin />} />
         <Route path="/captain-signup" element={<CaptainSignup />} />
         <Route
