@@ -1,29 +1,42 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCaptainStore } from "../Store/useCaptainStore";
+import { StartRide } from "../api/mapApi";
 
 const ConfirmRidePopUp = (props) => {
   const navigate = useNavigate();
 
   const [otp, setOtp] = useState("");
 
-  const handleConfirm = (e) => {
-    e.preventDefault();
-
-    navigate("/captain-riding");
-  };
-
   const clearCurrentRide = useCaptainStore((state) => state.clearCurrentRide);
   const currentRide = useCaptainStore((state) => state.currentRide);
 
-    if (!currentRide) {
+  if (!currentRide) {
     return (
       <div className="p-4">
         <p className="text-gray-500 text-center">No active ride available</p>
       </div>
     );
   }
+  const handleConfirm = async (e) => {
+    e.preventDefault();
 
+    try {
+      const ride = await StartRide({
+        rideId: currentRide._id,
+        OTP: otp,
+      });
+
+      if (ride) {
+        console.log("Ride started successfully:", ride);
+        navigate("/captain-riding");
+      }
+    } catch (error) {
+      console.error("Error starting ride:", error);
+    }
+
+    // navigate("/captain-riding");
+  };
 
   return (
     <div>

@@ -51,3 +51,18 @@ export const confirmRide = async ({ rideId, captainId }) => {
   );
   return data;
 };
+
+// Start ride by captain (after getting correct OTP)
+
+export const StartRide = async ({ rideId, OTP }) => {
+  try {
+    const { data } = await API.post(
+      "/ride/start-ride",
+      { rideId, OTP },
+      { tokenKey: "Captain_Token_Key" }
+    );
+    return data;
+  } catch (error) {
+    console.log("error ", error);
+  }
+};
