@@ -13,11 +13,13 @@ import { fetchSuggestions } from "../api/mapApi";
 import { useQuery } from "@tanstack/react-query";
 import { useSocketStore } from "../Store/useSocketStore";
 import { useUserStore } from "../Store/useUserStore";
+// import { useNavigate } from "react-router-dom";
 
 // Register the ReactPlugin once
 gsap.registerPlugin(useGSAP);
 
 const Home = () => {
+  // const navigate = useNavigate();
   const [panelOpen, setPanelOpen] = useState(false);
   const [vehiclePanelOpen, setVehiclePanelOpen] = useState(false);
   const [confirmRidePanel, setConfirmRidePanel] = useState(false);
@@ -76,7 +78,7 @@ const Home = () => {
 
   useEffect(() => {
     const cleanup = onEvent("ride-confirmed", (rideData) => {
-      if(!isConnected) return
+      if (!isConnected) return;
       console.log("Ride confirmed by Captain:", rideData);
       setConfirmedRide(rideData);
       setVehicleFound(false);
@@ -85,6 +87,15 @@ const Home = () => {
 
     return () => cleanup();
   }, [onEvent, setConfirmedRide, isConnected]);
+
+  useEffect(() => {
+    const cleanup = onEvent("ride-started", (rideData) => {
+      console.log("ride-started data", rideData);
+      // navigate("/riding");
+    });
+
+    return () => cleanup;
+  }, [onEvent]);
 
   //pickUp
   const { data: pickUpSuggestion } = useQuery({
