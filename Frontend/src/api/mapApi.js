@@ -66,3 +66,12 @@ export const StartRide = async ({ rideId, OTP }) => {
     console.log("error ", error);
   }
 };
+
+export const endRide = async ({ rideId }) => {
+  const { data } = await API.post(
+    "/ride/end-ride",
+    { rideId },
+    { tokenKey: "Captain_Token_Key" }
+  );
+  return data;
+};

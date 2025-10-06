@@ -1,9 +1,26 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useCaptainStore } from "../Store/useCaptainStore";
+import { endRide } from "../api/mapApi";
+import { useNavigate } from "react-router-dom";
 
 const FinishRide = (props) => {
   const currentRide = useCaptainStore((state) => state.currentRide);
+  const navigate = useNavigate();
+
+  const handleEndRide = async (e) => {
+        e.preventDefault();
+
+    try {
+      const ride = await endRide({ rideId: currentRide._id, });
+      if (ride) {
+        console.log("Ride ended successfully:", ride);
+        navigate("/captain-home");
+      }
+    } catch (error) {
+      console.log("error while ending the data", error.message);
+    }
+  };
 
   return (
     <div>
@@ -68,12 +85,12 @@ const FinishRide = (props) => {
         </div>
 
         <div className="flex w-[90%] gap-4 mt-4">
-          <Link
-            to="/captain-home"
+          <button
+            onClick={handleEndRide}
             className="flex-1 flex justify-center items-center bg-green-600 hover:bg-green-700 transition cursor-pointer text-white text-lg font-semibold p-2 rounded-lg mt-1"
           >
             Finish this Ride
-          </Link>
+          </button>
         </div>
         <p className="text-yellow-800 text-center text-sm md:text-base px-4 py-2 mt-3 bg-yellow-100 border-l-4 border-yellow-500 rounded-md shadow-sm">
           <span className="animate-pulse">⚠️</span> Click the{" "}
