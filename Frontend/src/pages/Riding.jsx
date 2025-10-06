@@ -1,7 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import useRideStore from "../Store/useRideStore";
 
 const Riding = () => {
+  const confirmedRide = useRideStore((state) => state.confirmedRide);
+  if (!confirmedRide) return null;
+
+  const { pickUp, captain, fare, destination } = confirmedRide;
+
   return (
     <div className="h-screen flex flex-col">
       <Link
@@ -31,30 +37,40 @@ const Riding = () => {
             className="h-20 mt-1"
           />
           <div className="text-right">
-            <h2 className="text-xl font-medium text-gray-600">HENRY</h2>
-            <h4 className="text-2xl font-semibold -mt-1 -mb-1">KA15AK00-0</h4>
+            <h2 className="text-xl font-medium text-gray-600">
+              {captain?.fullName?.firstName} {captain?.fullName?.lastName}
+            </h2>
+            <h4 className="text-2xl font-semibold -mt-1 -mb-1">
+              {captain?.vehicle?.plate}
+            </h4>
             <p className="text-lg text-gray-600">BMW X7</p>
           </div>
         </div>
         {/* Pickup & Payment Info Card */}
-        <div className="w-full bg-[#eee] flex flex-col gap-4 px-4 py-4 rounded-lg mb-3">
-          {/* Pickup Location */}
-          <div className="flex items-center gap-4">
+        <div className="w-full bg-[#eee] flex flex-col gap-5 px-4 py-4 rounded-lg mb-5 mt-5">
+          <div className="flex items-center gap-5 ">
             <i className="text-lg ri-map-pin-2-fill"></i>
             <div>
-              <h3 className="text-lg font-medium">562/11 A</h3>
-              <p className="text-sm text-gray-600 -mt-1">
-                Frankfurt am Main, Germany
-              </p>
+              <h4 className="font-medium">{pickUp || "No pickup selected"}</h4>
             </div>
           </div>
 
-          {/* Payment Info */}
-          <div className="flex items-center gap-4">
-            <i className="text-lg ri-currency-line"></i>
+          <div className="flex items-center gap-5">
+            <i className="ri-map-pin-user-fill"></i>
             <div>
-              <h3 className="text-lg font-medium">20 €</h3>
-              <p className="text-sm text-gray-600 -mt-1">Cash</p>
+              <h4 className="font-medium">
+                {destination || "No destination selected"}
+              </h4>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-5">
+            <i className="ri-currency-line"></i>
+            <div>
+              <h3 className="text-lg font-medium">
+                {fare?.toFixed(2) || "0.00"} €
+              </h3>
+              <p className="text-sm -mt-1 text-gray-600">Cash Cash</p>
             </div>
           </div>
         </div>
