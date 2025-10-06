@@ -1,13 +1,35 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import useRideStore from "../Store/useRideStore";
+import { useSocketStore } from "../Store/useSocketStore";
+import { useNavigate } from "react-router-dom";
 
 const Riding = () => {
+  const navigate = useNavigate();
+
+  const { onEvent, isConnected } = useSocketStore();
   const confirmedRide = useRideStore((state) => state.confirmedRide);
-  if (!confirmedRide) return null;
+
+  const initSocket = useSocketStore((state) => state.initSocket);
 
   const { pickUp, captain, fare, destination } = confirmedRide;
+  useEffect(() => {
+    initSocket();
+  }, [initSocket]);
 
+  useEffect(() => {
+    if (!isConnected) return;
+
+    console.log("🟢 Listening for ride-ended...");
+    const cleanup = onEvent("ride-ended", (data) => {
+      console.log("🚗 Ride Ended Event Received:", data);
+      navigate("/home");
+    });
+
+    return () => cleanup && cleanup();
+  }, [isConnected, navigate, onEvent]);
+
+  if (!confirmedRide) return null;
   return (
     <div className="h-screen flex flex-col">
       <Link
