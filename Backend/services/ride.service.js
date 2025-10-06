@@ -89,7 +89,7 @@ const confirmRideService = async ({ rideId, captain }) => {
   return ride;
 };
 
-const startRideService = async ({ rideId, OTP, captain }) => {
+const startRideService = async ({ rideId, OTP }) => {
   if (!rideId || !OTP) throw new Error("Ride Id and OTP is required");
 
   const ride = await rideModel
@@ -109,4 +109,26 @@ const startRideService = async ({ rideId, OTP, captain }) => {
   return ride;
 };
 
-export default { createRide, getFare, confirmRideService, startRideService };
+const endRideService = async ({ rideId, captain }) => {
+  if (!rideId || !captain) throw new Error("Ride Id and Captain is Required");
+
+  const ride = await rideModel
+    .findOne({ _id: rideId, captain: captain._id })
+    .populate("user")
+    .populate("captain")
+    .select("+OTP");
+
+  if (!ride) throw new Error("Ride Not Found");
+  if (ride.status !== "ongoing") throw new Error("Ride not ongoing");
+
+  await rideModel.findByIdAndUpdate({ _id: rideId }, { status: "completed" });
+  return ride;
+};
+
+export default {
+  createRide,
+  getFare,
+  confirmRideService,
+  startRideService,
+  endRideService,
+};

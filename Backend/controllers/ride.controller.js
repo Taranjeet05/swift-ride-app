@@ -6,8 +6,13 @@ import rideModel from "../models/ride.model.js";
 
 const { sendMessageToSocketId } = socket;
 
-const { createRide, getFare, confirmRideService, startRideService } =
-  rideService;
+const {
+  createRide,
+  getFare,
+  confirmRideService,
+  startRideService,
+  endRideService,
+} = rideService;
 const { getCaptainsInTheRadius, getAddressCoordinate } = mapsService;
 
 const createRideController = async (req, res) => {
@@ -132,4 +137,36 @@ const startRide = async (req, res) => {
   }
 };
 
-export default { createRideController, getRideFare, confirmRide, startRide };
+const endRide = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  const { rideId } = req.body;
+  if (!rideId) {
+    return res.status(400).json({ message: "rideId is required" });
+  }
+  try {
+    const ride = await endRideService({ rideId, captain: req.captain });
+
+    if (ride.user?.socketId) {
+      sendMessageToSocketId(ride.user?.socketId, {
+        event: "ride-ended",
+        data: ride,
+      });
+    }
+
+    res.status(200).json(ride);
+  } catch (error) {
+    console.log("error while ending the Ride", error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export default {
+  createRideController,
+  getRideFare,
+  confirmRide,
+  startRide,
+  endRide,
+};

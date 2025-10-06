@@ -4,7 +4,7 @@ import { body, query } from "express-validator";
 import rideController from "../controllers/ride.controller.js";
 import { authCaptain, authUser } from "../middlewares/auth.middleware.js";
 
-const { createRideController, getRideFare, confirmRide, startRide } =
+const { createRideController, getRideFare, confirmRide, startRide, endRide } =
   rideController;
 
 router.post(
@@ -45,6 +45,13 @@ router.post(
   body("rideId").isMongoId().withMessage("Invalid Ride Id"),
   body("OTP").isString().isLength({ min: 4 }).withMessage("OTP is Required"),
   startRide
+);
+
+router.post(
+  "/end-ride",
+  authCaptain,
+  body("rideId").isMongoId().withMessage("Invalid Ride Id"),
+  endRide
 );
 
 export default router;
