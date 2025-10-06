@@ -117,7 +117,7 @@ const startRide = async (req, res) => {
     const ride = await startRideService({ rideId, OTP, captain: req.captain });
 
     if (ride.user?.socketId) {
-      sendMessageToSocketId(ride.user.socketId, {
+      sendMessageToSocketId(ride.user?.socketId, {
         event: "ride-started",
         data: ride,
       });

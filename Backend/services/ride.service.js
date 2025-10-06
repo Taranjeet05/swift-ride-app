@@ -95,6 +95,7 @@ const startRideService = async ({ rideId, OTP, captain }) => {
   const ride = await rideModel
     .findOne({ _id: rideId })
     .populate("captain")
+    .populate("user")
     .select("+OTP");
 
   if (!ride) throw new Error("Ride is not Found");
