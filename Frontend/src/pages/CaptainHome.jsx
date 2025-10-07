@@ -9,6 +9,7 @@ import { useCaptainStore } from "../Store/useCaptainStore";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useRef } from "react";
+import LiveTracking from "../components/LiveTracking";
 
 const CaptainHome = () => {
   const [ridePopUpPanel, setRidePopUpPanel] = useState(false);
@@ -102,12 +103,7 @@ const CaptainHome = () => {
 
       {/* Map Section */}
       <div className="h-3/5 w-full">
-        {/* uber map image for temporary use until api integration */}
-        <img
-          src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
-          alt="uber-map"
-          className="h-full w-full object-cover"
-        />
+        <LiveTracking />
       </div>
 
       {/* Info Section of Captain */}

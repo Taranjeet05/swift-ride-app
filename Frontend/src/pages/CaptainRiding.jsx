@@ -3,6 +3,7 @@ import CaptainLogout from "../components/CaptainLogout";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import FinishRide from "../components/FinishRide";
+import LiveTracking from "../components/LiveTracking";
 
 const CaptainRiding = () => {
   const [finishRidePanel, setFinishRidePanel] = useState(false);
@@ -25,11 +26,8 @@ const CaptainRiding = () => {
       </div>
 
       <div className="h-4/5">
-        <img
-          src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
-          alt="uber-map"
-          className="h-full w-full object-cover"
-        />
+        {/* map */}
+        <LiveTracking />
       </div>
 
       <div

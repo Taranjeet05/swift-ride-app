@@ -14,6 +14,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useSocketStore } from "../Store/useSocketStore";
 import { useUserStore } from "../Store/useUserStore";
 import { useNavigate } from "react-router-dom";
+import LiveTracking from "../components/LiveTracking";
 
 // Register the ReactPlugin once
 gsap.registerPlugin(useGSAP);
@@ -203,12 +204,8 @@ const Home = () => {
       {/* *** */}
       {/* //*in this DIV: we have the map image for temporary use until api integration */}
       <div className="h-screen w-screen">
-        {/* uber map image for temporary use until api integration */}
-        <img
-          src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
-          alt="uber-map"
-          className="h-full w-full object-cover"
-        />
+        {/* map */}
+        <LiveTracking />
       </div>
 
       {/* **** */}

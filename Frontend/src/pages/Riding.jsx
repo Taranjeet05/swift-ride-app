@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import useRideStore from "../Store/useRideStore";
 import { useSocketStore } from "../Store/useSocketStore";
 import { useNavigate } from "react-router-dom";
+import LiveTracking from "../components/LiveTracking";
 
 const Riding = () => {
   const navigate = useNavigate();
@@ -41,12 +42,7 @@ const Riding = () => {
 
       {/* Map Section */}
       <div className="h-1/2 w-full">
-        {/* uber map image for temporary use until api integration */}
-        <img
-          src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
-          alt="uber-map"
-          className="h-full w-full object-cover"
-        />
+        <LiveTracking />
       </div>
 
       {/* Info Section */}
