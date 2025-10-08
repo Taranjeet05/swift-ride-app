@@ -210,9 +210,9 @@ const Home = () => {
 
       {/* **** */}
       {/* //*in this DIV: we have the form for pick-up and destination input */}
-      <div className="h-screen flex flex-col justify-end absolute w-full top-0 ">
+      <div className="h-screen flex flex-col justify-end absolute w-full top-0 pointer-events-none">
         {/* div to handle form for pick-up and destination input */}
-        <div className="h-[30%] p-6 bg-white relative">
+        <div className="h-[30%] p-6 bg-white relative pointer-events-auto">
           <h5
             ref={panelCloseRef}
             onClick={() => setPanelOpen(!panelOpen)}
@@ -254,7 +254,10 @@ const Home = () => {
           </button>
         </div>
         {/* div to handle suggestion for pre destination */}
-        <div ref={panelRef} className="bg-white h-0 overflow-hidden">
+        <div
+          ref={panelRef}
+          className="bg-white h-0 overflow-hidden pointer-events-auto"
+        >
           <LocationSearchPanel
             vehiclePanelOpen={vehiclePanelOpen}
             setVehiclePanelOpen={setVehiclePanelOpen}

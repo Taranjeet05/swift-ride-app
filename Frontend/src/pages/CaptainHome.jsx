@@ -96,7 +96,7 @@ const CaptainHome = () => {
 
   return (
     <div className="h-screen flex flex-col">
-      <div className="fixed p-6 top-0 flex items-center justify-between w-screen">
+      <div className="fixed p-6 top-0 z-10 flex items-center justify-between w-screen">
         <img src="images/uber.svg" alt="uber-log" className="w-16" />
         <CaptainLogout />
       </div>

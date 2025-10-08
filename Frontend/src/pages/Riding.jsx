@@ -35,7 +35,7 @@ const Riding = () => {
     <div className="h-screen flex flex-col">
       <Link
         to="/home"
-        className="fixed right-2 top-3 h-10 w-10 bg-white flex items-center justify-center rounded-full"
+        className="fixed right-2 top-3 z-10 h-10 w-10 bg-white flex items-center justify-center rounded-full"
       >
         <i className="ri-home-4-line text-lg font-bold"></i>
       </Link>
