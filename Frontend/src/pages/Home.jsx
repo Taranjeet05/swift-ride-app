@@ -26,7 +26,6 @@ const Home = () => {
   const [confirmRidePanel, setConfirmRidePanel] = useState(false);
   const [vehicleFound, setVehicleFound] = useState(false);
   const [waitingForDriver, setWaitingForDriver] = useState(false);
-
   const panelRef = useRef(null);
   const panelCloseRef = useRef(null);
   const vehiclePanelRef = useRef(null);
@@ -49,6 +48,9 @@ const Home = () => {
     setDestinationSuggestions,
     setConfirmedRide,
   } = useRideStore();
+
+  const [debouncedPickUp, setDebouncedPickUp] = useState(pickUp);
+  const [debouncedDestination, setDebouncedDestination] = useState(destination);
 
   const { emitEvent, onEvent } = useSocketStore();
   const { user } = useUserStore();
@@ -100,18 +102,33 @@ const Home = () => {
     return () => cleanup && cleanup();
   }, [onEvent, navigate, isConnected]);
 
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedPickUp(pickUp);
+    }, 500);
+    return () => clearTimeout(handler);
+  }, [pickUp]);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedDestination(destination);
+    }, 500);
+
+    return () => clearTimeout(handler);
+  }, [destination]);
+
   //pickUp
   const { data: pickUpSuggestion } = useQuery({
-    queryKey: ["pickUpSuggestion", pickUp],
-    queryFn: () => fetchSuggestions(pickUp),
-    enabled: !!pickUp,
+    queryKey: ["pickUpSuggestion", debouncedPickUp],
+    queryFn: () => fetchSuggestions(debouncedPickUp),
+    enabled: !!debouncedPickUp && debouncedPickUp.length >= 3,
   });
 
   // destination
   const { data: destinationSuggestion } = useQuery({
-    queryKey: ["destinationSuggestion", destination],
-    queryFn: () => fetchSuggestions(destination),
-    enabled: !!destination,
+    queryKey: ["destinationSuggestion", debouncedDestination],
+    queryFn: () => fetchSuggestions(debouncedDestination),
+    enabled: !!debouncedDestination && debouncedDestination.length >= 3,
   });
 
   // useEffect
