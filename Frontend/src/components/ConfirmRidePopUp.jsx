@@ -9,6 +9,7 @@ const ConfirmRidePopUp = (props) => {
   const [otp, setOtp] = useState("");
 
   const clearCurrentRide = useCaptainStore((state) => state.clearCurrentRide);
+  const setCurrentRide = useCaptainStore((state) => state.setCurrentRide);
   const currentRide = useCaptainStore((state) => state.currentRide);
 
   if (!currentRide) {
@@ -29,13 +30,14 @@ const ConfirmRidePopUp = (props) => {
 
       if (ride) {
         console.log("Ride started successfully:", ride);
+        const updateRide = { ...ride, status: "ongoing" };
+        setCurrentRide(updateRide);
+        console.log("✅ Ride started successfully:", updateRide);
         navigate("/captain-riding");
       }
     } catch (error) {
       console.error("Error starting ride:", error);
     }
-
-    // navigate("/captain-riding");
   };
 
   return (
