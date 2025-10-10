@@ -17,11 +17,10 @@ const RidePopUp = (props) => {
 
   const handleConfirmRide = async () => {
     try {
-      const ride = await confirmRide({
+      await confirmRide({
         rideId: currentRide._id,
         captainId: captain?._id,
       });
-      console.log("Ride confirmed:", ride);
     } catch (error) {
       console.error("Failed: to confirm Ride", error.message);
     }

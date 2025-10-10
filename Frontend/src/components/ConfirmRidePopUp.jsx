@@ -29,10 +29,8 @@ const ConfirmRidePopUp = (props) => {
       });
 
       if (ride) {
-        console.log("Ride started successfully:", ride);
         const updateRide = { ...ride, status: "ongoing" };
         setCurrentRide(updateRide);
-        console.log("✅ Ride started successfully:", updateRide);
         navigate("/captain-riding");
       }
     } catch (error) {

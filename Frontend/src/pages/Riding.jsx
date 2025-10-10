@@ -18,10 +18,7 @@ const Riding = () => {
   useEffect(() => {
     if (!isConnected || !socket) return;
 
-    console.log("🟢 Listening for 'ride-ended'...");
-
-    const handleRideEnded = (data) => {
-      console.log("🚗 Ride Ended Event Received:", data);
+    const handleRideEnded = () => {
       useRideStore.getState().setConfirmedRide(null);
       navigate("/home", { replace: true }); // replace to prevent going back
     };

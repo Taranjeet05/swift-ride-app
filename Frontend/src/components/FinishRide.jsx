@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { useCaptainStore } from "../Store/useCaptainStore";
 import { endRide } from "../api/mapApi";
 import { useNavigate } from "react-router-dom";
@@ -9,12 +8,11 @@ const FinishRide = (props) => {
   const navigate = useNavigate();
 
   const handleEndRide = async (e) => {
-        e.preventDefault();
+    e.preventDefault();
 
     try {
-      const ride = await endRide({ rideId: currentRide._id, });
+      const ride = await endRide({ rideId: currentRide._id });
       if (ride) {
-        console.log("Ride ended successfully:", ride);
         navigate("/captain-home");
       }
     } catch (error) {

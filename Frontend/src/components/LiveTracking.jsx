@@ -22,7 +22,6 @@ const LiveTracking = () => {
     const watchId = navigator.geolocation.watchPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
-        console.log("Updated location:", latitude, longitude);
         setCurrentPosition({ lat: latitude, lng: longitude });
       },
       (error) => console.error("Geolocation error:", error),

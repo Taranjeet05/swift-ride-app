@@ -18,12 +18,10 @@ export const useSocketStore = create(
       });
 
       socket.on("connect", () => {
-        console.log("✨ connected:", socket.id);
         set({ isConnected: true });
       });
 
       socket.on("disconnect", () => {
-        console.log("❌🔴❌ Disconnected from server");
         set({ isConnected: false });
       });
 

@@ -33,13 +33,9 @@ const CaptainHome = () => {
     };
     setup();
   }, [initializeCaptain, initSocket]);
-  // debug console
-  console.log("JOIN attempt", { captain, isConnected });
 
   useEffect(() => {
     if (!captain?._id || !isConnected) return;
-    // debug console
-    console.log("Emitting join event for user:", captain._id);
 
     emitEvent("join", { userId: captain._id, userType: "captain" });
 
@@ -63,8 +59,6 @@ const CaptainHome = () => {
     updateLocation();
 
     onEvent("new-ride", (data) => {
-      //debug console
-      console.log("Check new-ride DATA", data);
       setCurrentRide(data);
       setRidePopUpPanel(true);
     });
