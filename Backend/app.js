@@ -26,7 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 // enable CORS for all origins (for development purposes)
 app.use(
   cors({
-    origin: "https://swift-ride-app.vercel.app/", // replace with your actual frontend URL
+    origin: "https://swift-ride-app.vercel.app", // replace with your actual frontend URL
     credentials: true, // important to allow cookies/token sharing
   })
 );
