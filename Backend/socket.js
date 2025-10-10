@@ -13,8 +13,6 @@ const initializeSocket = (server) => {
   });
 
   io.on("connection", (socket) => {
-    console.log(`Client Connected 🫶✨: ${socket.id}`);
-
     // user or captain joins
 
     socket.on("join", async (data) => {
@@ -40,9 +38,8 @@ const initializeSocket = (server) => {
           );
         }
         if (!updatedDoc) {
-          console.warn(`${userType} with ID ${userId} is not found in DB`);
+          console.warn(`${userType} with is not found in DB`);
         }
-        console.log(`${userType} ${userId} is joined with socket ${socket.id}`);
       } catch (error) {
         console.error(`Error in join event ${error}`);
       }
@@ -82,7 +79,6 @@ const initializeSocket = (server) => {
     });
 
     socket.on("disconnect", async () => {
-      console.log(`Client Disconnected ${socket.id}`);
       try {
         await userModel.updateOne(
           { socketId: socket.id },

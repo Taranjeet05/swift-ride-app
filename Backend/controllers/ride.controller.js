@@ -33,23 +33,18 @@ const createRideController = async (req, res) => {
     });
 
     const pickUpCoordinates = await getAddressCoordinate(pickUp);
-    // debug console:
-    console.log("check coordinates", pickUpCoordinates);
 
     const captainsInRadius = await getCaptainsInTheRadius(
       pickUpCoordinates.lat,
       pickUpCoordinates.lng,
       50
     );
-    // debug console:
-    console.log("check captainInRadius", captainsInRadius);
 
     ride.OTP = "";
 
     const rideWithUser = await rideModel
       .findOne({ _id: ride._id })
       .populate("user");
-    console.log("User socketId", rideWithUser.user.socketId);
 
     if (!captainsInRadius || captainsInRadius.length === 0) {
       return res.status(404).json({
@@ -57,8 +52,6 @@ const createRideController = async (req, res) => {
       });
     }
     captainsInRadius.map((captain) => {
-      // debug console:
-      console.log("Check captain & ride", captain, ride);
       sendMessageToSocketId(captain.socketId, {
         event: "new-ride",
         data: rideWithUser,
